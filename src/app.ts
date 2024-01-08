@@ -1,8 +1,8 @@
-const express = require("express");
+import express from 'express';
 
 const app = express();
 
-const apiRouter = require('./routes/api.router')
+import apiRouter from './api/v1/routes/api.router'
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
@@ -11,4 +11,4 @@ app.use("/api/v1",apiRouter);
 
 // app.use(notFound);
 
-module.exports = app;
+export default app;
