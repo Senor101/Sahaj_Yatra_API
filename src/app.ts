@@ -2,7 +2,7 @@ import express from 'express';
 
 const app = express();
 
-import apiRouter from './api/v1/routes/api.router'
+import apiRouter from './api'
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
