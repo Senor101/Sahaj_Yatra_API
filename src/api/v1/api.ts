@@ -2,9 +2,8 @@ import { Request, Response } from "express";
 import { Router } from "express";
 
 import authRouter from "./routes/auth.router";
-
 import transactionRouter from "./routes/transaction.router";
-
+import adminRouter from "./routes/admin.router";
 import userRouter from "./routes/user.router"
 
 const router = Router();
@@ -18,5 +17,7 @@ router.use('/user',userRouter);
 router.use('/auth',authRouter);
 
 router.use('/transaction',transactionRouter);
+
+router.use('/admin',adminRouter);
 
 export default router;
