@@ -7,6 +7,7 @@ export interface IUser extends Document {
     phoneNumber : string | number;
     citizenshipNumber : string;
     rfidNumber?: string;
+    verified?: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -38,6 +39,10 @@ const userSchema = new Schema({
     rfidNumber : {
         type: String,
         unique: true,
+    },
+    verified: {
+        type: Boolean,
+        default : false,
     }
 },
     {

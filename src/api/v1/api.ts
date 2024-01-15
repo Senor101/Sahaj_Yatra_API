@@ -5,11 +5,15 @@ import authRouter from "./routes/auth.router";
 
 import transactionRouter from "./routes/transaction.router";
 
+import userRouter from "./routes/user.router"
+
 const router = Router();
 
 router.get("/",(req:Request,res:Response) : Response=> {
     return res.status(200).send("<h1 align='center'>Welcome to Sahaj Yatra API</h1>");
 });
+
+router.use('/user',userRouter);
 
 router.use('/auth',authRouter);
 
