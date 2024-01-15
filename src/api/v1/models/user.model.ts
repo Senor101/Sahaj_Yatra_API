@@ -7,7 +7,7 @@ export interface IUser extends Document {
     phoneNumber : string | number;
     citizenshipNumber : string;
     rfidNumber?: string;
-    verified?: boolean;
+    isVerified?: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -40,7 +40,7 @@ const userSchema = new Schema({
         type: String,
         unique: true,
     },
-    verified: {
+    isVerified: {
         type: Boolean,
         default : false,
     }

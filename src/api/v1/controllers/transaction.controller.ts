@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-const getTransactionHistory = (req: Request, res: Response, next: NextFunction) => {
+const getTransactionHistory =async (req: Request, res: Response, next: NextFunction) => {
     try{
 
     }catch(error){
@@ -8,7 +8,7 @@ const getTransactionHistory = (req: Request, res: Response, next: NextFunction) 
     }
 }
 
-const verifyPayment = (Req: Request, res: Response, next: NextFunction) => {
+const verifyPayment = async (Req: Request, res: Response, next: NextFunction) => {
     try{
 
     }catch(error){
