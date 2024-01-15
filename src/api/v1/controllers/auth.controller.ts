@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";  
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
 
 import User from "../models/user.model"
 import { userExists } from "../utils/userExists.util";
@@ -7,13 +8,24 @@ import {IUser} from "../models/user.model"
 
 const loginUser = async (req: Request, res: Response, next: NextFunction) : Promise<Response | void>  => {
     try{
-        const {email, password} : {email:string, password:string}= req.body;
-        if(!await userExists(email)){
-            throw new Error("User does not exist");
+        const {phoneNumber, password} : {phoneNumber:string, password:string}= req.body;
+        if(!await userExists(phoneNumber)){
+            throw new Error("Invalid Credentials");
         }
+        const user = await User.findOne({phoneNumber:phoneNumber})
+        // if(!user?.password){
+        //     return res.status(400).json({
+        //         message: "Password is required"
+        //     })
+        // }
+        const isPasswordValid = await bcrypt.compare(password, user?.password || "");
+        if(!isPasswordValid){
+            throw new Error("Invalid Credentials");
+        }
+        const token = jwt.sign({id: user?._id}, process.env.JWT_SECRET || "", {expiresIn: "1d"});
         return res.status(200).json({
             message: "User Login Successful",
-            data:'addEventListener'
+            token: token,
         });
     }catch(error){
         next(error);
@@ -23,7 +35,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) : Prom
 const registerUser = async (req: Request, res: Response, next: NextFunction) : Promise<Response | void> => {
     try{
         const {username,email,phoneNumber,citizenshipNumber,password} : IUser = req.body;
-        if(await userExists(email)){
+        if(await userExists(phoneNumber)){
             throw Error("User already exists");
         }
         if(!password){
