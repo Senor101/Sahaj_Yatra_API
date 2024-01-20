@@ -1,56 +1,56 @@
-import {Document, Schema, model} from 'mongoose'
+import { Document, Schema, model } from "mongoose";
 
 export interface IUser extends Document {
-    username: string;
-    email: string;
-    password?: string;
-    phoneNumber : string | number;
-    citizenshipNumber : string;
-    rfidNumber?: string;
-    isVerified?: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+  username: string;
+  email: string;
+  password?: string;
+  phoneNumber: string | number;
+  citizenshipNumber: string;
+  rfidNumber?: string;
+  isVerified?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const userSchema = new Schema({
+const userSchema = new Schema(
+  {
     username: {
-        type: String,
-        required: [true, "Username is required"],
+      type: String,
+      required: [true, "Username is required"],
     },
     email: {
-        type: String,
-        required: [true, "Email is required"],
-        unique: true,
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
     },
     phoneNumber: {
-        type: String || Number,
-        required: [true, "Phone Number is required"],
-        unique: true,
+      type: String || Number,
+      required: [true, "Phone Number is required"],
+      unique: true,
     },
     citizenshipNumber: {
-        type: String,
-        required: [true, "Citizenship Number is required"],
-        unique: true,
+      type: String,
+      required: [true, "Citizenship Number is required"],
+      unique: true,
     },
     password: {
-        type: String,
-        required: [true, "Password is required"],
+      type: String,
+      required: [true, "Password is required"],
     },
-    rfidNumber : {
-        type: String,
-        unique: true,
+    rfidNumber: {
+      type: String,
+      unique: true,
     },
     isVerified: {
-        type: Boolean,
-        default : false,
-    }
-},
-    {
-        timestamps: true,
-    }
-)
+      type: Boolean,
+      default: false,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const User = model<IUser>('User', userSchema);
-
+const User = model<IUser>("User", userSchema);
 
 export default User;
