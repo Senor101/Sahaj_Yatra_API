@@ -1,10 +1,10 @@
-class CustomError extends Error {
-    statusCode: number;
 
-    constructor(message: string, statusCode: number) {
-        super(message);
-        this.statusCode = statusCode;
-    }
+import { response } from "express";
+
+const throwError = (message:string, statusCode:number) => {
+    return response.status(statusCode).json({
+        error:message
+    })
 }
 
-export default CustomError;
+export default throwError;

@@ -5,12 +5,13 @@ import jwt from "jsonwebtoken"
 import User from "../models/user.model"
 import { userExists } from "../utils/userExists.util";
 import {IUser} from "../models/user.model"
+import throwError from "../utils/throwError.util";
 
 const loginUser = async (req: Request, res: Response, next: NextFunction) : Promise<Response | void>  => {
     try{
         const {phoneNumber, password} : {phoneNumber:string, password:string}= req.body;
         if(!await userExists(phoneNumber)){
-            throw new Error("Invalid Credentials");
+            return throwError("Invalid Credentials", 404);
         }
         const user = await User.findOne({phoneNumber:phoneNumber})
         // if(!user?.password){
@@ -20,7 +21,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) : Prom
         // }
         const isPasswordValid = await bcrypt.compare(password, user?.password || "");
         if(!isPasswordValid){
-            throw new Error("Invalid Credentials");
+            return throwError("Invalid Credentials", 400);
         }
         const token = jwt.sign({id: user?._id}, process.env.JWT_SECRET || "", {expiresIn: "1d"});
         return res.status(200).json({
