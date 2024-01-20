@@ -7,7 +7,7 @@ import { userExists } from "../utils/userExists.util";
 import { IUser } from "../models/user.model";
 import throwError from "../utils/throwError.util";
 
-const loginUser = async (
+const userLogin = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -43,7 +43,7 @@ const loginUser = async (
   }
 };
 
-const registerUser = async (
+const userRegister = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -76,7 +76,7 @@ const registerUser = async (
   }
 };
 
-const adminLogin = async (
+const busOwnerLogin = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -107,7 +107,7 @@ const adminLogin = async (
   }
 };
 
-const adminRegister = async (
+const busOwnerRegister = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -119,4 +119,4 @@ const adminRegister = async (
   }
 };
 
-export default { loginUser, registerUser, adminLogin, adminRegister };
+export default { userLogin, userRegister, busOwnerLogin, busOwnerRegister };
