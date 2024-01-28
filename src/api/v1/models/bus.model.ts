@@ -3,8 +3,8 @@ import { Document, Schema, model } from "mongoose";
 export interface IBus extends Document {
   busNumber: string;
   busType: string;
-  busRoute: string;
-  busSeats: number;
+  busRoute?: string;
+  busSeats?: number;
   currentLocation: {
     latitude: number;
     longitude: number;
