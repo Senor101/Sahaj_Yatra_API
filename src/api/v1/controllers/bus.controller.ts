@@ -30,6 +30,10 @@ const registerBus = async (
 ): Promise<Response | void> => {
   try {
     const busBody: IBus = req.body;
+    const existingBus = await Bus.findOne({ busNumber: busBody.busNumber });
+    if (existingBus) {
+      return throwError("Bus with provided bus number exists.", 409);
+    }
     const newBus = await Bus.create(busBody);
     return res.status(201).json({
       message: "New Bus registered",
@@ -75,7 +79,7 @@ const updateBusCurrentLocation = async (
     requiredBus.currentLocation = newLocation;
     await requiredBus.save();
     return res.status(200).json({
-      message: "Bus current location fetched",
+      message: "Current Bus location updated.",
       data: requiredBus,
     });
   } catch (error) {

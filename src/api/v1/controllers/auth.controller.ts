@@ -6,6 +6,7 @@ import User from "../models/user.model";
 import { userExists } from "../utils/userExists.util";
 import { IUser } from "../models/user.model";
 import throwError from "../utils/throwError.util";
+import { BusOwner, IBusOwner } from "../models/bus.model";
 
 const userLogin = async (
   req: Request,
@@ -113,7 +114,29 @@ const busOwnerRegister = async (
   next: NextFunction
 ): Promise<Response | void> => {
   try {
-    const { phoneNumber, password, email, citizenshipNumber } = req.body;
+    const busOwnerBody: IBusOwner = req.body;
+    const existingBusOwner = await BusOwner.findOne({
+      $or: [
+        { phoneNumber: busOwnerBody.phoneNumber },
+        { email: busOwnerBody.email },
+      ],
+    });
+    if (existingBusOwner) {
+      return throwError(
+        "User with given email or number has already registered.",
+        400
+      );
+    }
+    const hashedPassword: string = await bcrypt.hash(busOwnerBody.password, 12);
+    const newBusOwner = await BusOwner.create({
+      ...busOwnerBody,
+      password: hashedPassword,
+    });
+    newBusOwner.password = "";
+    res.status(201).json({
+      message: "New Bus Owner registered successfully.",
+      data: newBusOwner,
+    });
   } catch (error) {
     next(error);
   }
