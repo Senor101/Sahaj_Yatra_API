@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
-import { IBus, Bus, BusOwner, DailyEarning } from "../models/bus.model";
-import throwError from "../utils/throwError.util";
+import { IBus, Bus, BusOwner, DailyEarning } from '../models/bus.model';
+import throwError from '../utils/throwError.util';
 
 const getBuses = async (
   req: Request,
@@ -12,10 +12,10 @@ const getBuses = async (
     const busOwnerID = req.user;
     const busOwner = await BusOwner.findById(busOwnerID);
     if (!busOwner) {
-      return throwError("Invalid Bus Owner", 404);
+      return throwError(req, res, 'Invalid Bus Owner', 404);
     }
     return res.status(200).json({
-      message: "Buses fetched Succesfully",
+      message: 'Buses fetched Succesfully',
       data: busOwner?.buses,
     });
   } catch (error) {
@@ -32,11 +32,11 @@ const registerBus = async (
     const busBody: IBus = req.body;
     const existingBus = await Bus.findOne({ busNumber: busBody.busNumber });
     if (existingBus) {
-      return throwError("Bus with provided bus number exists.", 409);
+      return throwError(req, res, 'Bus with provided bus number exists.', 409);
     }
     const newBus = await Bus.create(busBody);
     return res.status(201).json({
-      message: "New Bus registered",
+      message: 'New Bus registered',
       data: newBus,
     });
   } catch (error) {
@@ -53,10 +53,10 @@ const getBusLocation = async (
     const busID = req.params.busID;
     const requiredBus: IBus | null = await Bus.findById(busID);
     if (!requiredBus) {
-      return throwError("BUS with given ID not found", 404);
+      return throwError(req, res, 'BUS with given ID not found', 404);
     }
     return res.status(200).json({
-      message: "Current Bus location fetched",
+      message: 'Current Bus location fetched',
       data: requiredBus.currentLocation,
     });
   } catch (error) {
@@ -74,12 +74,12 @@ const updateBusCurrentLocation = async (
     const newLocation: { latitude: number; longitude: number } = req.body;
     const requiredBus = await Bus.findById(busID);
     if (!requiredBus) {
-      return throwError("BUS with given ID not found", 404);
+      return throwError(req, res, 'BUS with given ID not found', 404);
     }
     requiredBus.currentLocation = newLocation;
     await requiredBus.save();
     return res.status(200).json({
-      message: "Current Bus location updated.",
+      message: 'Current Bus location updated.',
       data: requiredBus,
     });
   } catch (error) {
