@@ -1,10 +1,14 @@
+import { Request, Response } from 'express';
 
-import { response } from "express";
-
-const throwError = (message:string, statusCode:number) => {
-    return response.status(statusCode).json({
-        error:message
-    })
-}
+const throwError = (
+  req: Request,
+  res: Response,
+  message: string,
+  statusCode: number
+) => {
+  return res.status(statusCode).json({
+    error: message,
+  });
+};
 
 export default throwError;

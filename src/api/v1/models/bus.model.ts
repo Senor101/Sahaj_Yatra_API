@@ -1,4 +1,4 @@
-import { Document, Schema, model } from "mongoose";
+import { Document, Schema, model } from 'mongoose';
 
 export interface IBus extends Document {
   busNumber: string;
@@ -17,8 +17,8 @@ export interface IBusOwner extends Document {
   username: string;
   email: string;
   phoneNumber: string;
-  password: string;
-  buses: [IBus];
+  password?: string;
+  buses?: [IBus];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,12 +35,12 @@ const busSchema = new Schema(
   {
     busNumber: {
       type: String,
-      required: [true, "Bus Number is required"],
+      required: [true, 'Bus Number is required'],
       trim: true,
     },
     busType: {
       type: String,
-      required: [true, "Bus Type is required"],
+      required: [true, 'Bus Type is required'],
       trim: true,
     },
     busRoute: {
@@ -55,12 +55,12 @@ const busSchema = new Schema(
     currentLocation: {
       latitude: {
         type: Number,
-        required: [true, "Latitude is required"],
+        required: [true, 'Latitude is required'],
         default: 0,
       },
       longitude: {
         type: Number,
-        required: [true, "Longitude is required"],
+        required: [true, 'Longitude is required'],
         default: 0,
       },
     },
@@ -68,18 +68,18 @@ const busSchema = new Schema(
   { timestamps: true }
 );
 
-const Bus = model<IBus>("Bus", busSchema);
+const Bus = model<IBus>('Bus', busSchema);
 
 const dailyEarningSchema = new Schema(
   {
     busNumber: {
       type: String,
-      required: [true, "Bus Number is required"],
+      required: [true, 'Bus Number is required'],
       trim: true,
     },
     date: {
       type: Date,
-      required: [true, "Date is required"],
+      required: [true, 'Date is required'],
     },
     earning: {
       type: Number,
@@ -89,13 +89,13 @@ const dailyEarningSchema = new Schema(
   { timestamps: true }
 );
 
-const DailyEarning = model<IdailyEarning>("DailyEarning", dailyEarningSchema);
+const DailyEarning = model<IdailyEarning>('DailyEarning', dailyEarningSchema);
 
 const busOwnerSchema = new Schema(
   {
     username: {
       type: String,
-      required: [true, "Username is required"],
+      required: [true, 'Username is required'],
       trim: true,
     },
     email: {
@@ -106,20 +106,25 @@ const busOwnerSchema = new Schema(
     },
     phoneNumber: {
       type: String,
-      required: [true, "Phone Number is required"],
+      required: [true, 'Phone Number is required'],
       unique: true,
       trim: true,
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, 'Password is required'],
       trim: true,
     },
-    buses: [Bus],
-    sales: [DailyEarning],
+    buses: [
+      {
+        type: Schema.ObjectId,
+        ref: 'Bus',
+      },
+    ],
+    // sales: [DailyEarning],
   },
   { timestamps: true }
 );
 
-const BusOwner = model<IBusOwner>("BusOwner", busOwnerSchema);
+const BusOwner = model<IBusOwner>('BusOwner', busOwnerSchema);
 export { BusOwner, Bus, DailyEarning };

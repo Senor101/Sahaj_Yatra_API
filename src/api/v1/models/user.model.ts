@@ -1,4 +1,4 @@
-import { Document, Schema, model } from "mongoose";
+import { Document, Schema, model } from 'mongoose';
 
 export interface IUser extends Document {
   username: string;
@@ -16,26 +16,26 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      required: [true, "Username is required"],
+      required: [true, 'Username is required'],
     },
     email: {
       type: String,
-      required: [true, "Email is required"],
+      required: [true, 'Email is required'],
       unique: true,
     },
     phoneNumber: {
       type: String || Number,
-      required: [true, "Phone Number is required"],
+      required: [true, 'Phone Number is required'],
       unique: true,
     },
     citizenshipNumber: {
       type: String,
-      required: [true, "Citizenship Number is required"],
+      required: [true, 'Citizenship Number is required'],
       unique: true,
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, 'Password is required'],
     },
     rfidNumber: {
       type: String,
@@ -51,6 +51,6 @@ const userSchema = new Schema(
   }
 );
 
-const User = model<IUser>("User", userSchema);
+const User = model<IUser>('User', userSchema);
 
 export default User;
