@@ -51,18 +51,19 @@ const userRegister = async (
 ): Promise<Response | void> => {
   try {
     const userBody: IUser = req.body;
-    if (await userExists(userBody.phoneNumber)) {
-      return throwError(req, res, 'User already exists', 409);
-    }
     if (!userBody.password) {
       return throwError(req, res, 'Password is required', 400);
+    }
+    const existingUser = await User.findOne({citizenshipNumber:userBody.citizenshipNumber});
+    if (existingUser) {
+      return throwError(req, res, 'User already registered', 409);
     }
     const hashedPassword = await bcrypt.hash(userBody.password, 12);
     const newUser = await User.create({
       ...userBody,
       password: hashedPassword,
     });
-    newUser.password = undefined;
+    newUser.password = '';
     return res.status(201).json({
       message: 'User Created',
       data: newUser,
@@ -82,13 +83,15 @@ const busOwnerLogin = async (
       phoneNumber,
       password,
     }: { phoneNumber: string | number; password: string } = req.body;
-    if (!(await userExists(phoneNumber))) {
+    const existingBusOwner = await BusOwner.findOne({
+      phoneNumber: phoneNumber,
+    });
+    if (!existingBusOwner) {
       return throwError(req, res, 'Invalid Credentials', 404);
     }
-    const admin = await User.findOne({ phoneNumber: phoneNumber });
     const isPasswordValid = await bcrypt.compare(
       password,
-      admin?.password || ''
+      existingBusOwner?.password || ''
     );
     if (!isPasswordValid) {
       return throwError(req, res, 'Invalid Credentials', 403);
@@ -96,7 +99,7 @@ const busOwnerLogin = async (
     const token = jwt.sign(
       {
         admin: true,
-        id: admin?._id,
+        id: existingBusOwner?._id,
       },
       process.env.JWT_SECRET || '',
       { expiresIn: '1d' }
@@ -123,7 +126,6 @@ const busOwnerRegister = async (
         { email: busOwnerBody.email },
       ],
     });
-    console.log('ok');
     if (!busOwnerBody.password) {
       return throwError(req, res, 'Password is required', 400);
     }
