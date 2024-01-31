@@ -9,7 +9,6 @@ export const userExists = async (
     await BusOwner.findOne({ phoneNumber: phoneNumber }),
   ]);
   if (await user) {
-    console.log('User exists');
     return true;
   }
   return false;

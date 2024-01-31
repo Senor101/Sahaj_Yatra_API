@@ -31,7 +31,6 @@ const userSchema = new Schema(
     citizenshipNumber: {
       type: String,
       required: [true, 'Citizenship Number is required'],
-      unique: true,
     },
     password: {
       type: String,
@@ -39,7 +38,6 @@ const userSchema = new Schema(
     },
     rfidNumber: {
       type: String,
-      unique: true,
     },
     isVerified: {
       type: Boolean,
