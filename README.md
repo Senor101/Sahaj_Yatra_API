@@ -46,4 +46,4 @@ You can locally setup the system or just use the API hosted on onrender, for whi
 
 ### API
 
-For interacting with the api, refer to [SAHAJ YATRA API DOCS](DOCS).
+For interacting with the api, refer to [SAHAJ YATRA API DOCS](DOCS.md).
