@@ -1,3 +1,12 @@
+# RESTFUL API
+
+**Note:**
+The `{{API_URL}}` denotes the base url corresponding to either the local API url or the hosted url.
+
+- For local `{{API_URL}} : http://localhost:8000/api/v1`
+- For remote `{{API_URL}} : https://sahaj-yatra-api.onrender.com/api/v1`
+
+
 ## Endpoints
 
 * [AUTH](#auth)
