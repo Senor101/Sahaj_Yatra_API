@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/v1', apiRouter);
 
-app.use('*', async (req, res) => res.status(404).json({ error: 'not found' }));
+app.use('*', async (req, res) => res.status(404).json({ error: 'End point not found' }));
 
 app.use(customErrorHandler);
 
