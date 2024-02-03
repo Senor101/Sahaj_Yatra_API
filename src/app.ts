@@ -1,6 +1,7 @@
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
+import logger from 'morgan';
 require('dotenv').config();
 
 const app = express();
@@ -22,10 +23,12 @@ var corsOptions = {
     },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
-    preflightcontinue: true,
+    preflightcontinue: true
 };
 
 app.use(cors(corsOptions));
+
+app.use(logger('dev'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
