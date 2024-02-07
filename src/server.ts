@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 8000;
 const server = http.createServer(app);
 
 const keepServerLive = async () => {
-    const request = await fetch('http://localhost:8000/api/v1/user');
+    const request = await fetch(`${process.env.REMOTE_API}/user`);
 };
 
 const startServer = async () => {
