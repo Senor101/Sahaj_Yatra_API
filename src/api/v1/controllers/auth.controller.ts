@@ -38,6 +38,7 @@ const userLogin = async (req: Request, res: Response, next: NextFunction): Promi
 
 const userRegister = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     try {
+
         const userBody: IUser = req.body;
         if (!userBody.password) {
             return throwError(req, res, 'Password is required', 400);
