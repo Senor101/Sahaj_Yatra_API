@@ -156,4 +156,4 @@ const superAdminLogin = async (req: Request, res: Response, next: NextFunction):
     }
 };
 
-export default { userLogin, userRegister, busOwnerLogin, busOwnerRegister };
+export default { userLogin, userRegister, busOwnerLogin, busOwnerRegister, superAdminLogin };
