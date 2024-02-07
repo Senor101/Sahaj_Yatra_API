@@ -3,7 +3,6 @@ require('dotenv').config();
 
 import app from './app';
 import { connectDB } from './api/v1/config/db.config';
-import User from './api/v1/models/user.model';
 
 const PORT = process.env.PORT || 8000;
 

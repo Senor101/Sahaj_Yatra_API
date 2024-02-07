@@ -29,7 +29,8 @@ const userLogin = async (req: Request, res: Response, next: NextFunction): Promi
         });
         return res.status(200).json({
             message: 'User Login Successful',
-            token: token
+            token: token,
+            role: 'user'
         });
     } catch (error) {
         next(error);
@@ -38,7 +39,6 @@ const userLogin = async (req: Request, res: Response, next: NextFunction): Promi
 
 const userRegister = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     try {
-
         const userBody: IUser = req.body;
         if (!userBody.password) {
             return throwError(req, res, 'Password is required', 400);
@@ -85,7 +85,8 @@ const busOwnerLogin = async (req: Request, res: Response, next: NextFunction): P
         );
         return res.status(200).json({
             message: 'Admin Login Successful',
-            token: token
+            token: token,
+            role: 'busOwner'
         });
     } catch (error) {
         next(error);
