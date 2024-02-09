@@ -39,6 +39,30 @@ const userSchema = new Schema(
         rfidNumber: {
             type: String
         },
+        amount: {
+            type:Number,
+            default: 0,
+        },
+        onBoard: {
+            type: Boolean,
+            default: false,
+        },
+        lastLatitude: {
+            type:Number,
+            default:0
+        },
+        lastLongitude: {
+            type:Number,
+            default:0
+        },
+        currentLatitude: {
+            type:Number,
+            default:0
+        },
+        currentLongitude:{
+            type:Number,
+            default:0
+        },
         isVerified: {
             type: Boolean,
             index: true,
