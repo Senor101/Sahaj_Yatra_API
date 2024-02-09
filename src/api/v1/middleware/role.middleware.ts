@@ -4,6 +4,16 @@ import throwError from '../utils/throwError.util';
 
 const checkRole = async (req: Request, res: Response, next: NextFunction, role: string) => {
     try {
+        if (res.locals.user.role !== role) return throwError(req, res, 'Unauthorized', 401);
+        return next();
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+const validateToken = async (req: Request, res: Response, next: NextFunction) => {
+    try {
         const { authorization } = req.headers;
         if (!authorization) return throwError(req, res, 'Missing auth header', 401);
         const token = authorization.split(' ')[1];
@@ -15,9 +25,8 @@ const checkRole = async (req: Request, res: Response, next: NextFunction, role: 
 
         if (typeof decoded !== 'object') return throwError(req, res, 'Invalid Token', 401);
 
-        if (!decoded.role || !decoded.id) if (decoded.role !== role) return throwError(req, res, 'Unauthorized', 401);
-
-        if (decoded.role !== role) return throwError(req, res, 'Unauthorized', 401);
+        if (!decoded.role || !decoded.id) return throwError(req, res, 'Invalid Token, Try loggin in again', 401);
+        res.locals.user = decoded;
 
         return next();
     } catch (error) {
@@ -26,8 +35,8 @@ const checkRole = async (req: Request, res: Response, next: NextFunction, role: 
     }
 };
 
-const isAdmin = async (req: Request, res: Response, next: NextFunction) => checkRole(req, res, next, 'admin');
+const isSuperAdmin = async (req: Request, res: Response, next: NextFunction) => checkRole(req, res, next, 'superAdmin');
 const isBusOwner = async (req: Request, res: Response, next: NextFunction) => checkRole(req, res, next, 'busOwner');
 const isUser = async (req: Request, res: Response, next: NextFunction) => checkRole(req, res, next, 'user');
 
-export { isAdmin, isBusOwner, isUser };
+export { isSuperAdmin, isBusOwner, isUser, validateToken };
