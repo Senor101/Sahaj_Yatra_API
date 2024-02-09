@@ -10,6 +10,8 @@ router.get("/:busID/location", busController.getBusLocation);
 
 router.post("/", busController.registerBus);
 
-router.put("/:busID", busController.updateBusCurrentLocation);
+
+// update your bus location with request from nodemcu providing latitude and longitude in queries
+router.get("/:busID", busController.updateBusCurrentLocation);
 
 export default router;

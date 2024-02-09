@@ -40,4 +40,32 @@ const getVerifiedUsers = async (req: Request, res: Response, next: NextFunction)
     }
 };
 
-export default { getAllUsers, getUnverifiedUsers, getVerifiedUsers };
+
+// // initial request when a user enters a bus and scans rfid tag
+// const checkValidity = async(req:Request, res:Response, next: NextFunction) : Promise<Response | void> => {
+//     try{
+//         const {rfid, latitude, longitude} = req.query;
+//         // check if rfid is valid and has minimum balance
+//         return res.status(200).json({
+//             valid:true,
+//         })
+//     }catch(error){
+//         next(error)
+//     }
+// }
+
+// when the user leaves the bus, scan rfid tag
+const deductBusFareController = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+    try {
+        const { rfid, latitude, longitude } = req.query;
+        // calculate distance base fare from current and last geo location
+        //deduct amount
+        return res.status(200).json({
+            message: ''
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export default { getAllUsers, getUnverifiedUsers, getVerifiedUsers, deductBusFareController };
