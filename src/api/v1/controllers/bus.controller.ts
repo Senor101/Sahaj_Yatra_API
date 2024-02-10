@@ -77,11 +77,11 @@ const updateBusCurrentLocation = async (
     if (!requiredBus) {
       return throwError(req, res, 'BUS with given ID not found', 404);
     }
-    const numberLatitude: number = +latitude;
-    const numberLongitude: number = +longitude;
+    const parsedLatitude: number = +latitude;
+    const parsedLongitude: number = +longitude;
     const newLocation = {
-      latitude: numberLatitude,
-      longitude: numberLongitude
+      latitude: parsedLatitude,
+      longitude: parsedLongitude
     }
     requiredBus.currentLocation = newLocation;
     // await requiredBus.save();

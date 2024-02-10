@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/user.model';
+import throwError from '../utils/throwError.util';
+import bcrypt from 'bcrypt'
 
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -13,6 +15,21 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
         next(error);
     }
 };
+
+const getIndividualUserController = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+    try {
+        const userID = req.params.id;
+        const requiredUser = await User.findById(userID);
+        if(!requiredUser) return throwError(req, res, "User not found.", 404);
+        return res.status(200).json({
+            message: 'User fetched Succesfully',
+            data:requiredUser
+        })
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 const getUnverifiedUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -54,18 +71,111 @@ const getVerifiedUsers = async (req: Request, res: Response, next: NextFunction)
 //     }
 // }
 
+//verify and assign rfid tag to requesting user
+const verifyUserController = async (req: Request, res: Response, next:NextFunction) : Promise<Response | void> => {
+    try{
+        const userId = req.params.id;
+        const {rfidNumber} = req.body; 
+        const existingUser = await User.findById(userId);
+        if(!existingUser) return throwError(req, res, "User not found", 404);
+        existingUser.rfidNumber = rfidNumber;
+        existingUser.isVerified = true;
+        await existingUser.save();
+        return res.status(200).json({
+            message: "RFID assigned to user"
+        })
+    }catch(error){
+        next(error)
+    }
+}
+
 // when the user leaves the bus, scan rfid tag
 const deductBusFareController = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     try {
         const { rfid, latitude, longitude } = req.query;
         // calculate distance base fare from current and last geo location
         //deduct amount
-        return res.status(200).json({
-            message: ''
-        });
+
+        // minimum amount to get ride service
+        const minimumAmount = 50;
+
+        if(!rfid) 
+            return throwError(req, res, "RFID tag required in query", 400);
+        if (!latitude || !longitude) 
+            return throwError(req, res, 'Latitude and Longitude are required!', 400);
+        const existingUser = await User.findOne({rfidNumber: rfid});
+        if(!existingUser) 
+            return throwError(req, res, "Invalid RFID TAG", 404);
+
+        const parsedLatitude: number = +latitude;
+        const parsedLongitude: number = +longitude;
+
+        const onBoardStatus = existingUser.onBoard;
+
+        let requiredResponse:{valid:boolean, message:string, newAmount: number} = {valid: false, message: '', newAmount: 0};
+        if(!onBoardStatus){
+            // User is getting inside the bus
+            if(existingUser.amount >= minimumAmount) {
+                requiredResponse.message = 'Valid User';
+                requiredResponse.valid = true;
+                requiredResponse.newAmount = existingUser.amount;
+            }else{
+                return res.status(400).json({
+                    message: "Not enough balance",
+                    valid : false
+                })
+            }
+            existingUser.location.lastLatitude = parsedLatitude;
+            existingUser.location.lastLongitude = parsedLongitude;
+            existingUser.onBoard = true;
+        } else{
+            // User is getting out of the bus.
+            existingUser.location.currentLatitude = parsedLatitude;
+            existingUser.location.currentLongitude = parsedLongitude;
+            existingUser.onBoard = false;
+            // TODO: calculate fare based on difference in latitude and longitude
+            let calculatedFare = 10;
+            existingUser.amount -= calculatedFare;
+            requiredResponse.message = 'Get out of the bus';
+            requiredResponse.valid = true;
+            requiredResponse.newAmount = existingUser.amount; 
+        }
+        await existingUser.save();
+        return res.status(200).json(requiredResponse);
     } catch (error) {
         next(error);
     }
 };
 
-export default { getAllUsers, getUnverifiedUsers, getVerifiedUsers, deductBusFareController };
+const updateUserDetailController = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+    try {
+        const {username, email, phoneNumber, password} = req.body;
+        const userId = req.params.id;
+        const requiredUser = await User.findById(userId);
+        if(!requiredUser) return throwError(req, res, "User not found", 404);
+        requiredUser.username = username ? username: requiredUser.username;
+        requiredUser.email = email ? email: requiredUser.email;
+        requiredUser.phoneNumber = phoneNumber ? phoneNumber :requiredUser.phoneNumber;
+        if(password){
+            const hashedPassword = await bcrypt.hash(password, 10);
+            requiredUser.password = hashedPassword
+        }
+        await requiredUser.save();
+        return res.status(200).json({
+            message: "User details updated Successfully",
+            data:requiredUser
+        })
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export default { getAllUsers, 
+    getUnverifiedUsers, 
+    getVerifiedUsers, 
+    deductBusFareController,
+    verifyUserController,
+    getIndividualUserController,
+    updateUserDetailController
+};
