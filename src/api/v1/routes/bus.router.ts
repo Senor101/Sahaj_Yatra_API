@@ -4,7 +4,7 @@ import busController from "../controllers/bus.controller";
 
 const router = Router();
 
-router.get("/", busController.getBuses);
+router.get('/', busController.getBusesForIndividualBusOwnerController);
 
 router.get("/:busID/location", busController.getBusLocation);
 

@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { IBus, Bus, BusOwner, DailyEarning } from '../models/bus.model';
 import throwError from '../utils/throwError.util';
 
-const getBuses = async (
+const getBusesForIndividualBusOwnerController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -95,8 +95,8 @@ const updateBusCurrentLocation = async (
 };
 
 export default {
-  getBuses,
-  registerBus,
-  getBusLocation,
-  updateBusCurrentLocation,
+    getBusesForIndividualBusOwnerController,
+    registerBus,
+    getBusLocation,
+    updateBusCurrentLocation
 };

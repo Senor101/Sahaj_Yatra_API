@@ -3,6 +3,22 @@ import User from '../models/user.model';
 import throwError from '../utils/throwError.util';
 import bcrypt from 'bcrypt'
 
+
+function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2:number) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2 - lat1); // deg2rad below
+    var dLon = deg2rad(lon2 - lon1);
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+}
+
+function deg2rad(deg: number) {
+    return deg * (Math.PI / 180);
+}
+
+
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const users = await User.find();
@@ -75,14 +91,23 @@ const getVerifiedUsers = async (req: Request, res: Response, next: NextFunction)
 const verifyUserController = async (req: Request, res: Response, next:NextFunction) : Promise<Response | void> => {
     try{
         const userId = req.params.id;
-        const {rfidNumber} = req.body; 
+        const {rfidNumber} = req.body;
+        if(!rfidNumber) 
+            return throwError(req, res, "RFID tag number is required", 400); 
+
         const existingUser = await User.findById(userId);
-        if(!existingUser) return throwError(req, res, "User not found", 404);
+
+        if(!existingUser) 
+            return throwError(req, res, "User not fond", 404);
+        if(existingUser.isVerified) 
+            return throwError(req, res, "User already Verified", 400);
+
         existingUser.rfidNumber = rfidNumber;
         existingUser.isVerified = true;
         await existingUser.save();
         return res.status(200).json({
-            message: "RFID assigned to user"
+            message: "RFID assigned to user",
+            data: existingUser
         })
     }catch(error){
         next(error)
@@ -134,7 +159,13 @@ const deductBusFareController = async (req: Request, res: Response, next: NextFu
             existingUser.location.currentLongitude = parsedLongitude;
             existingUser.onBoard = false;
             // TODO: calculate fare based on difference in latitude and longitude
-            let calculatedFare = 10;
+            const totalDistance = getDistanceFromLatLonInKm(
+                existingUser.location.lastLatitude,
+                existingUser.location.lastLongitude,
+                existingUser.location.currentLatitude,
+                existingUser.location.currentLongitude
+            )
+            let calculatedFare : number= 10*totalDistance; 
             existingUser.amount -= calculatedFare;
             requiredResponse.message = 'Get out of the bus';
             requiredResponse.valid = true;
