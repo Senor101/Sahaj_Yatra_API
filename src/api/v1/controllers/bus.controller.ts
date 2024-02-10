@@ -70,14 +70,21 @@ const updateBusCurrentLocation = async (
   next: NextFunction
 ): Promise<Response | void> => {
   try {
-    const busID = req.params.busID;
-    const newLocation: { latitude: number; longitude: number } = req.body;
+    const {busID, latitude, longitude}= req.query;
+
     const requiredBus = await Bus.findById(busID);
+    if(!latitude || !longitude) return throwError(req, res, "Latitude and Longitude are required!", 400)
     if (!requiredBus) {
       return throwError(req, res, 'BUS with given ID not found', 404);
     }
+    const numberLatitude: number = +latitude;
+    const numberLongitude: number = +longitude;
+    const newLocation = {
+      latitude: numberLatitude,
+      longitude: numberLongitude
+    }
     requiredBus.currentLocation = newLocation;
-    await requiredBus.save();
+    // await requiredBus.save();
     return res.status(200).json({
       message: 'Current Bus location updated.',
       data: requiredBus,
