@@ -10,7 +10,32 @@ export interface IUser extends Document {
     isVerified?: boolean;
     createdAt: Date;
     updatedAt: Date;
+    location: {
+        lastLatitude:number,
+        lastLongitude:number,
+        currentLatitude: number,
+        currentLongitude:number
+    }
 }
+
+const userLocationSchema = new Schema({
+    lastLatitude: {
+        type: Number,
+        default: 0
+    },
+    lastLongitude: {
+        type: Number,
+        default: 0
+    },
+    currentLatitude: {
+        type: Number,
+        default: 0
+    },
+    currentLongitude: {
+        type: Number,
+        default: 0
+    }
+});
 
 const userSchema = new Schema(
     {
@@ -39,6 +64,15 @@ const userSchema = new Schema(
         rfidNumber: {
             type: String
         },
+        amount: {
+            type:Number,
+            default: 0,
+        },
+        onBoard: {
+            type: Boolean,
+            default: false,
+        },
+        location: userLocationSchema,
         isVerified: {
             type: Boolean,
             index: true,
