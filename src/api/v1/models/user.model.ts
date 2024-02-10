@@ -23,21 +23,17 @@ export interface IUser extends Document {
 const userLocationSchema = new Schema({
     lastLatitude: {
         type: Number,
-        default: 0
     },
     lastLongitude: {
         type: Number,
-        default: 0
     },
     currentLatitude: {
         type: Number,
-        default: 0
     },
     currentLongitude: {
         type: Number,
-        default: 0
     }
-});
+}, {_id:false});
 
 const userSchema = new Schema(
     {
@@ -75,7 +71,15 @@ const userSchema = new Schema(
             type: Boolean,
             default: false,
         },
-        location: userLocationSchema,
+        location: {
+            type: userLocationSchema,
+            default : {
+                lastLatitude: 0,
+                lastLongitude:0,
+                currentLatitude: 0,
+                currentLongitude: 0,
+            }
+        },
         isVerified: {
             type: Boolean,
             index: true,
