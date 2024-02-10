@@ -133,9 +133,10 @@ const superAdminLogin = async (req: Request, res: Response, next: NextFunction):
         if (email !== process.env.SUPER_ADMIN_EMAIL) {
             return throwError(req, res, 'Invalid Credentials', 403);
         }
-        const isPasswordValid = await bcrypt.compare(password, process.env.SUPER_ADMIN_PASSWORD as string);
+        if (!process.env.PASSWORD) return throwError(req, res,"Server error", 500 )
+        const isPasswordValid = await bcrypt.compare(password, process.env.PASSWORD);
         if (!isPasswordValid) {
-            return throwError(req, res, 'Invalid Credentials', 403);
+            return throwError(req, res, 'pInvalid Credentials', 403);
         }
         const token = jwt.sign(
             {

@@ -8,6 +8,8 @@ export interface IUser extends Document {
     citizenshipNumber: string;
     rfidNumber?: string;
     isVerified?: boolean;
+    onBoard: boolean;
+    amount: number;
     createdAt: Date;
     updatedAt: Date;
     location: {
@@ -62,7 +64,8 @@ const userSchema = new Schema(
             required: [true, 'Password is required']
         },
         rfidNumber: {
-            type: String
+            type: String,
+            unique: true
         },
         amount: {
             type:Number,

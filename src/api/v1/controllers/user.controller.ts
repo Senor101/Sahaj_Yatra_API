@@ -74,7 +74,16 @@ const getVerifiedUsers = async (req: Request, res: Response, next: NextFunction)
 //verify and assign rfid tag to requesting user
 const verifyUserController = async (req: Request, res: Response, next:NextFunction) : Promise<Response | void> => {
     try{
-
+        const userId = req.params.id;
+        const {rfidNumber} = req.body; 
+        const existingUser = await User.findById(userId);
+        if(!existingUser) return throwError(req, res, "User not found", 404);
+        existingUser.rfidNumber = rfidNumber;
+        existingUser.isVerified = true;
+        await existingUser.save();
+        return res.status(200).json({
+            message: "RFID assigned to user"
+        })
     }catch(error){
         next(error)
     }
@@ -86,9 +95,53 @@ const deductBusFareController = async (req: Request, res: Response, next: NextFu
         const { rfid, latitude, longitude } = req.query;
         // calculate distance base fare from current and last geo location
         //deduct amount
-        return res.status(200).json({
-            message: ''
-        });
+
+        // minimum amount to get ride service
+        const minimumAmount = 50;
+
+        if(!rfid) 
+            return throwError(req, res, "RFID tag required in query", 400);
+        if (!latitude || !longitude) 
+            return throwError(req, res, 'Latitude and Longitude are required!', 400);
+        const existingUser = await User.findOne({rfidNumber: rfid});
+        if(!existingUser) 
+            return throwError(req, res, "Invalid RFID TAG", 404);
+
+        const parsedLatitude: number = +latitude;
+        const parsedLongitude: number = +longitude;
+
+        const onBoardStatus = existingUser.onBoard;
+
+        let requiredResponse:{valid:boolean, message:string, newAmount: number} = {valid: false, message: '', newAmount: 0};
+        if(!onBoardStatus){
+            // User is getting inside the bus
+            if(existingUser.amount >= minimumAmount) {
+                requiredResponse.message = 'Valid User';
+                requiredResponse.valid = true;
+                requiredResponse.newAmount = existingUser.amount;
+            }else{
+                return res.status(400).json({
+                    message: "Not enough balance",
+                    valid : false
+                })
+            }
+            existingUser.location.lastLatitude = parsedLatitude;
+            existingUser.location.lastLongitude = parsedLongitude;
+            existingUser.onBoard = true;
+        } else{
+            // User is getting out of the bus.
+            existingUser.location.currentLatitude = parsedLatitude;
+            existingUser.location.currentLongitude = parsedLongitude;
+            existingUser.onBoard = false;
+            // TODO: calculate fare based on difference in latitude and longitude
+            let calculatedFare = 10;
+            existingUser.amount -= calculatedFare;
+            requiredResponse.message = 'Get out of the bus';
+            requiredResponse.valid = true;
+            requiredResponse.newAmount = existingUser.amount; 
+        }
+        await existingUser.save();
+        return res.status(200).json(requiredResponse);
     } catch (error) {
         next(error);
     }
