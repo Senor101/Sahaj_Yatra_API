@@ -10,9 +10,7 @@ import busRouter from "./routes/bus.router";
 const router = Router();
 
 router.get("/", (req: Request, res: Response): Response => {
-  return res
-    .status(200)
-    .send("<h1 align='center'>Welcome to Sahaj Yatra API</h1>");
+    return res.status(200).send("<h1 align='center'>Welcome to Sahaj Yatra API</h1>");
 });
 
 // use routers here
