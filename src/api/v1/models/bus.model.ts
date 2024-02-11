@@ -9,6 +9,7 @@ export interface IBus extends Document {
     latitude: number;
     longitude: number;
   };
+  busOwner : IBusOwner,
   createdAt: Date;
   updatedAt: Date;
 }
@@ -64,6 +65,10 @@ const busSchema = new Schema(
         default: 0,
       },
     },
+    busOwner: {
+      type: Schema.ObjectId,
+      ref:'BusOwner'
+    }
   },
   { timestamps: true }
 );
