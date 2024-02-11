@@ -38,6 +38,7 @@ const getAllBusesController = async (req: Request, res: Response, next: NextFunc
         const buses = await Bus.find().lean();
         return res.status(200).json({
             message: "Buses fetched",
+            count: buses.length,
             data: buses
         });
     } catch (error) {
