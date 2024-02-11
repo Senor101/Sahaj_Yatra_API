@@ -59,6 +59,16 @@ URL: {{API_URL}}/auth/login/admin
 }
 ```
 
+**_Response:_**
+
+```js
+{
+    "message": "Admin Login Successful",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXV
+    "role": "busOwner"
+}
+```
+
 ### 2. USER LOGIN
 
 **_Endpoint:_**
@@ -78,6 +88,16 @@ URL: {{API_URL}}/auth/login/
 }
 ```
 
+**_Response:_**
+
+```js
+{
+    "message": "User Login Successful",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9,
+    "role": "user"
+}
+```
+
 ### 3. USER REGISTER
 
 **_Endpoint:_**
@@ -92,11 +112,39 @@ URL: {{API_URL}}/auth/register
 
 ```js
 {
-    "username":"Pramis Gurung",
-    "email" : "gurungpramaish@test2.com",
-    "phoneNumber": "90871632494",
-    "citizenshipNumber": "44-01-2-234",
-    "password": "nichaGurung"
+    "username":"Tester Gurung",
+    "email" : "test99@test2.com",
+    "phoneNumber": "913431492342",
+    "citizenshipNumber": "44-02-234",
+    "password": "newpasss"
+}
+```
+
+**_Response:_**
+
+```js
+{
+    "message": "User Created",
+    "data": {
+        "username": "Tester Gurung",
+        "email": "test99@test2.com",
+        "phoneNumber": "913431492342",
+        "citizenshipNumber": "44-02-234",
+        "password": "",
+        "amount": 0,
+        "onBoard": false,
+        "location": {
+            "lastLatitude": 0,
+            "lastLongitude": 0,
+            "currentLatitude": 0,
+            "currentLongitude": 0
+        },
+        "isVerified": false,
+        "_id": "userid",
+        "createdAt": "2024-02-11T14:42:28.867Z",
+        "updatedAt": "2024-02-11T14:42:28.867Z",
+        "__v": 0
+    }
 }
 ```
 
@@ -121,6 +169,25 @@ URL: {{API_URL}}/auth/register/admin/
 }
 ```
 
+**_Response:_**
+
+```js
+{
+    "message": "New Bus Owner registered successfully.",
+    "data": {
+        "username": "Sahuji gurung",
+        "email": "sahuji@tst2.com",
+        "phoneNumber": "981234142",
+        "password": "",
+        "buses": [],
+        "_id": "65c8dd53f8bec50a38e90944",
+        "createdAt": "2024-02-11T14:44:35.183Z",
+        "updatedAt": "2024-02-11T14:44:35.183Z",
+        "__v": 0
+    }
+}
+```
+
 ### 5. SUPERADMIN LOGIN
 
 **_Endpoint:_**
@@ -136,11 +203,23 @@ URL: {{API_URL}}/auth/login/superadmin
 ```js
 {
     "email":"superadmin@test.com",
-    "password": "AdminPassword"
+    "password": "pasqw1233"
+}
+```
+
+**_Response:_**
+
+```js
+{
+    "message": "Super Admin Login Successful",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpX
+    "role": "superAdmin"
 }
 ```
 
 ## TRANSACTION
+
+TRANSACTION API COMING SOON
 
 ### 1. GET TRANSACTION HISTORY
 
@@ -174,6 +253,36 @@ Type:
 URL: {{API_URL}}/user/unverified
 ```
 
+**_Response:_**
+
+```js
+{
+    "message": "Unverified Users fetched succesfully",
+    "count": 1,
+    "data": [
+        {
+            "_id": "65c8dcd4f8bec50a38e90940",
+            "username": "Tester Gurung",
+            "email": "test99@test2.com",
+            "phoneNumber": "913431492342",
+            "citizenshipNumber": "44-02-234",
+            "amount": 0,
+            "onBoard": false,
+            "location": {
+                "lastLatitude": 0,
+                "lastLongitude": 0,
+                "currentLatitude": 0,
+                "currentLongitude": 0
+            },
+            "isVerified": false,
+            "createdAt": "2024-02-11T14:42:28.867Z",
+            "updatedAt": "2024-02-11T14:42:28.867Z",
+            "__v": 0
+        }
+    ]
+}
+```
+
 ### 2. GET ALL USERS
 
 **_Endpoint:_**
@@ -182,6 +291,56 @@ URL: {{API_URL}}/user/unverified
 Method: GET
 Type:
 URL: {{API_URL}}/user
+```
+
+**_Response:_**
+
+```js
+{
+    "message": "Users fetched succesfully",
+    "count": 2,
+    "data": [
+        {
+            "_id": "65c76e7f88927729d424371e",
+            "username": "Pramis Gurung",
+            "email": "gurungpramaish@test2.com",
+            "phoneNumber": "90871632494",
+            "citizenshipNumber": "44-01-2-234",
+            "amount": 402.940441936635,
+            "onBoard": false,
+            "location": {
+                "lastLatitude": 28.2004436,
+                "lastLongitude": 83.9822141,
+                "currentLatitude": 28.1615954,
+                "currentLongitude": 84.0473208
+            },
+            "isVerified": true,
+            "createdAt": "2024-02-10T12:39:27.574Z",
+            "updatedAt": "2024-02-10T14:25:15.267Z",
+            "__v": 0,
+            "rfidNumber": "83492-q23401"
+        },
+        {
+            "_id": "65c8dcd4f8bec50a38e90940",
+            "username": "Tester Gurung",
+            "email": "test99@test2.com",
+            "phoneNumber": "913431492342",
+            "citizenshipNumber": "44-02-234",
+            "amount": 0,
+            "onBoard": false,
+            "location": {
+                "lastLatitude": 0,
+                "lastLongitude": 0,
+                "currentLatitude": 0,
+                "currentLongitude": 0
+            },
+            "isVerified": false,
+            "createdAt": "2024-02-11T14:42:28.867Z",
+            "updatedAt": "2024-02-11T14:42:28.867Z",
+            "__v": 0
+        }
+    ]
+}
 ```
 
 ### 3. UPDATE USER INFO
@@ -211,7 +370,7 @@ URL:
 ```bash
 Method: GET
 Type:
-URL: {{API_URL}}/user/deductfare
+URL: {{API_URL}}/user/deductfare?rfid=12321-123&latitude=12&longitude=13
 ```
 
 **_Query params:_**
@@ -222,6 +381,24 @@ URL: {{API_URL}}/user/deductfare
 | latitude  | 28.1615954   |             |
 | longitude | 84.0473208   |             |
 
+**_Response:_**
+
+```js
+{
+    "valid": true,
+    "message": "Valid User",
+    "newAmount": 402.940441936635
+}
+
+//OR depending on the passenger is entering or exiting the bus calculate and deduct fare
+
+{
+    "valid": true,
+    "message": "Get out of the bus",
+    "newAmount": 980.5335507038734
+}
+```
+
 ### 6. VERIFY USER
 
 **_Endpoint:_**
@@ -229,14 +406,42 @@ URL: {{API_URL}}/user/deductfare
 ```bash
 Method: POST
 Type: RAW
-URL: {{API_URL}}/user/65c76e7f88927729d424371e/verify
+URL: {{API_URL}}/user/65c8dcd4f8bec50a38e90940/verify
 ```
 
 **_Body:_**
 
 ```js
 {
-    "rfidNumber": "83492-q23401"
+    "rfidNumber": "91234302-1234ad"
+}
+```
+
+**_Response:_**
+
+```js
+{
+    "message": "RFID assigned to user",
+    "data": {
+        "_id": "65c8dcd4f8bec50a38e90940",
+        "username": "Tester Gurung",
+        "email": "test99@test2.com",
+        "phoneNumber": "913431492342",
+        "citizenshipNumber": "44-02-234",
+        "amount": 0,
+        "onBoard": false,
+        "location": {
+            "lastLatitude": 0,
+            "lastLongitude": 0,
+            "currentLatitude": 0,
+            "currentLongitude": 0
+        },
+        "isVerified": true,
+        "createdAt": "2024-02-11T14:42:28.867Z",
+        "updatedAt": "2024-02-11T14:55:18.059Z",
+        "__v": 0,
+        "rfidNumber": "91234302-1234ad"
+    }
 }
 ```
 
@@ -250,6 +455,57 @@ Type:
 URL: {{API_URL}}/user/verified
 ```
 
+**_Response:_**
+
+```js
+{
+    "message": "Verified Users fetched successfully",
+    "count": 2,
+    "data": [
+        {
+            "_id": "65c76e7f88927729d424371e",
+            "username": "Pramis Gurung",
+            "email": "gurungpramaish@test2.com",
+            "phoneNumber": "90871632494",
+            "citizenshipNumber": "44-01-2-234",
+            "amount": 980.5335507038734,
+            "onBoard": false,
+            "location": {
+                "lastLatitude": 28.915954,
+                "lastLongitude": 84.0473208,
+                "currentLatitude": 28.915954,
+                "currentLongitude": 84.0273208
+            },
+            "isVerified": true,
+            "createdAt": "2024-02-10T12:39:27.574Z",
+            "updatedAt": "2024-02-11T14:53:53.068Z",
+            "__v": 0,
+            "rfidNumber": "83492-q23401"
+        },
+        {
+            "_id": "65c8dcd4f8bec50a38e90940",
+            "username": "Tester Gurung",
+            "email": "test99@test2.com",
+            "phoneNumber": "913431492342",
+            "citizenshipNumber": "44-02-234",
+            "amount": 0,
+            "onBoard": false,
+            "location": {
+                "lastLatitude": 0,
+                "lastLongitude": 0,
+                "currentLatitude": 0,
+                "currentLongitude": 0
+            },
+            "isVerified": true,
+            "createdAt": "2024-02-11T14:42:28.867Z",
+            "updatedAt": "2024-02-11T14:55:18.059Z",
+            "__v": 0,
+            "rfidNumber": "91234302-1234ad"
+        }
+    ]
+}
+```
+
 ### 8. GET INDIVIDUAL USER
 
 **_Endpoint:_**
@@ -258,6 +514,34 @@ URL: {{API_URL}}/user/verified
 Method: GET
 Type:
 URL: {{API_URL}}/user/65c75f5a493432f2e63553cb
+```
+
+**_Response:_**
+
+```js
+{
+    "message": "User fetched Succesfully",
+    "data": {
+        "_id": "65c76e7f88927729d424371e",
+        "username": "Pramis Gurung",
+        "email": "gurungpramaish@test2.com",
+        "phoneNumber": "90871632494",
+        "citizenshipNumber": "44-01-2-234",
+        "amount": 980.5335507038734,
+        "onBoard": false,
+        "location": {
+            "lastLatitude": 28.915954,
+            "lastLongitude": 84.0473208,
+            "currentLatitude": 28.915954,
+            "currentLongitude": 84.0273208
+        },
+        "isVerified": true,
+        "createdAt": "2024-02-10T12:39:27.574Z",
+        "updatedAt": "2024-02-11T14:53:53.068Z",
+        "__v": 0,
+        "rfidNumber": "83492-q23401"
+    }
+}
 ```
 
 ## BUS
@@ -272,6 +556,18 @@ Type:
 URL: {{API_URL}}/bus/65c79874fafbad6c62efcd27/location
 ```
 
+**_Response:_**
+
+```js
+{
+    "message": "Current Bus location fetched",
+    "data": {
+        "latitude": 0,
+        "longitude": 0
+    }
+}
+```
+
 ### 2. UPDATE BUS LOCATION
 
 **_Endpoint:_**
@@ -279,7 +575,29 @@ URL: {{API_URL}}/bus/65c79874fafbad6c62efcd27/location
 ```bash
 Method: GET
 Type:
-URL: {{API_URL}}/bus
+URL: {{API_URL}}/bus/location?busId=65c79775fafbad6c62efcd23&latitude=28.2045&longitude=83.9849
+```
+
+**_Response:_**
+
+```js
+{
+    "message": "Current Bus location updated.",
+    "data": {
+        "_id": "65c79775fafbad6c62efcd23",
+        "busNumber": "Ga 1 Kha 983",
+        "busType": "Mini Bus",
+        "busRoute": "Lamachaur - chhorepatan",
+        "busSeats": 36,
+        "currentLocation": {
+            "latitude": 28.2045,
+            "longitude": 83.9849
+        },
+        "createdAt": "2024-02-10T15:34:13.791Z",
+        "updatedAt": "2024-02-10T15:34:13.791Z",
+        "__v": 0
+    }
+}
 ```
 
 ### 3. REGISTER BUS
@@ -296,10 +614,32 @@ URL: {{API_URL}}/bus
 
 ```js
 {
-    "busNumber":"Ga 1 Kha 903",
+    "busNumber":"Ga 1 Kha 123",
     "busType": "Mini Bus",
     "busRoute": "Lamachaur - chhorepatan",
     "busSeats": 36
+}
+```
+
+**_Response:_**
+
+```js
+{
+    "message": "New Bus registered",
+    "data": {
+        "busNumber": "Ga 1 Kha 123",
+        "busType": "Mini Bus",
+        "busRoute": "Lamachaur - chhorepatan",
+        "busSeats": 36,
+        "currentLocation": {
+            "latitude": 0,
+            "longitude": 0
+        },
+        "_id": "65c8e13ea55a0840d13947e5",
+        "createdAt": "2024-02-11T15:01:18.554Z",
+        "updatedAt": "2024-02-11T15:01:18.554Z",
+        "__v": 0
+    }
 }
 ```
 
@@ -313,6 +653,59 @@ Type:
 URL: {{API_URL}}/bus
 ```
 
+**_Response:_**
+
+```js
+{
+    "message": "Buses fetched",
+    "count": 3,
+    "data": [
+        {
+            "_id": "65c79775fafbad6c62efcd23",
+            "busNumber": "Ga 1 Kha 983",
+            "busType": "Mini Bus",
+            "busRoute": "Lamachaur - chhorepatan",
+            "busSeats": 36,
+            "currentLocation": {
+                "latitude": 0,
+                "longitude": 0
+            },
+            "createdAt": "2024-02-10T15:34:13.791Z",
+            "updatedAt": "2024-02-10T15:34:13.791Z",
+            "__v": 0
+        },
+        {
+            "_id": "65c79874fafbad6c62efcd27",
+            "busNumber": "Ga 1 Kha 903",
+            "busType": "Mini Bus",
+            "busRoute": "Lamachaur - chhorepatan",
+            "busSeats": 36,
+            "currentLocation": {
+                "latitude": 0,
+                "longitude": 0
+            },
+            "createdAt": "2024-02-10T15:38:28.019Z",
+            "updatedAt": "2024-02-10T15:38:28.019Z",
+            "__v": 0
+        },
+        {
+            "_id": "65c8e13ea55a0840d13947e5",
+            "busNumber": "Ga 1 Kha 123",
+            "busType": "Mini Bus",
+            "busRoute": "Lamachaur - chhorepatan",
+            "busSeats": 36,
+            "currentLocation": {
+                "latitude": 0,
+                "longitude": 0
+            },
+            "createdAt": "2024-02-11T15:01:18.554Z",
+            "updatedAt": "2024-02-11T15:01:18.554Z",
+            "__v": 0
+        }
+    ]
+}
+```
+
 ### 5. GET INDIVIDUAL BUS
 
 **_Endpoint:_**
@@ -321,6 +714,28 @@ URL: {{API_URL}}/bus
 Method: GET
 Type:
 URL: {{API_URL}}/bus/65c79775fafbad6c62efcd23
+```
+
+**_Response:_**
+
+```js
+{
+    "message": "Bus fetched successfully",
+    "data": {
+        "_id": "65c79775fafbad6c62efcd23",
+        "busNumber": "Ga 1 Kha 983",
+        "busType": "Mini Bus",
+        "busRoute": "Lamachaur - chhorepatan",
+        "busSeats": 36,
+        "currentLocation": {
+            "latitude": 0,
+            "longitude": 0
+        },
+        "createdAt": "2024-02-10T15:34:13.791Z",
+        "updatedAt": "2024-02-10T15:34:13.791Z",
+        "__v": 0
+    }
+}
 ```
 
 ---
