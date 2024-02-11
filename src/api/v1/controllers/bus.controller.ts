@@ -10,7 +10,7 @@ const getBusesForIndividualBusOwnerController = async (
 ): Promise<Response | void> => {
   try {
     const busOwnerID = req.user;
-    const busOwner = await BusOwner.findById(busOwnerID);
+    const busOwner = await BusOwner.findById(busOwnerID).lean();
     if (!busOwner) {
       return throwError(req, res, 'Invalid Bus Owner', 404);
     }
@@ -23,6 +23,18 @@ const getBusesForIndividualBusOwnerController = async (
   }
 };
 
+const getAllBusesController = async (req:Request, res:Response, next:NextFunction) => {
+  try{
+    const buses = await Bus.find().lean();
+    return res.status(200).json({
+      message: 'Buses fetched',
+      data:buses
+    })
+  }catch(error){
+    next(error)
+  }
+}
+
 const registerBus = async (
   req: Request,
   res: Response,
@@ -30,7 +42,7 @@ const registerBus = async (
 ): Promise<Response | void> => {
   try {
     const busBody: IBus = req.body;
-    const existingBus = await Bus.findOne({ busNumber: busBody.busNumber });
+    const existingBus = await Bus.findOne({ busNumber: busBody.busNumber }).lean();
     if (existingBus) {
       return throwError(req, res, 'Bus with provided bus number exists.', 409);
     }
@@ -51,7 +63,7 @@ const getBusLocation = async (
 ): Promise<Response | void> => {
   try {
     const busID = req.params.busID;
-    const requiredBus: IBus | null = await Bus.findById(busID);
+    const requiredBus: IBus | null = await Bus.findById(busID).lean();
     if (!requiredBus) {
       return throwError(req, res, 'BUS with given ID not found', 404);
     }
@@ -72,7 +84,7 @@ const updateBusCurrentLocation = async (
   try {
     const {busID, latitude, longitude}= req.query;
 
-    const requiredBus = await Bus.findById(busID);
+    const requiredBus = await Bus.findById(busID).lean();
     if(!latitude || !longitude) return throwError(req, res, "Latitude and Longitude are required!", 400)
     if (!requiredBus) {
       return throwError(req, res, 'BUS with given ID not found', 404);
@@ -98,5 +110,6 @@ export default {
     getBusesForIndividualBusOwnerController,
     registerBus,
     getBusLocation,
-    updateBusCurrentLocation
+    updateBusCurrentLocation,
+    getAllBusesController
 };

@@ -4,9 +4,7 @@ import { Router } from "express";
 //import routers here
 import authRouter from "./routes/auth.router";
 import transactionRouter from "./routes/transaction.router";
-import adminRouter from "./routes/admin.router";
 import userRouter from "./routes/user.router";
-import geoLocationRouter from "./routes/geolocation.router";
 import busRouter from "./routes/bus.router";
 
 const router = Router();
@@ -23,10 +21,6 @@ router.use("/user", userRouter);
 router.use("/auth", authRouter);
 
 router.use("/transaction", transactionRouter);
-
-router.use("/admin", adminRouter);
-
-router.use("/location", geoLocationRouter);
 
 router.use("/bus", busRouter);
 
