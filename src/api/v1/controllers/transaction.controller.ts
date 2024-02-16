@@ -1,18 +1,32 @@
 import { Request, Response, NextFunction } from "express";
 import axios from "axios";
+import Transaction from "../models/transaction.model";
+import { ObjectId } from "mongoose";
 
 const getTransactionHistory = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const { userId } = req.params;
+        const transactionHistory = await Transaction.find({
+            userId: userId
+        });
+        return res.status(200).json({
+            message: "Transaction History Fetched Successfully",
+            data: transactionHistory
+        });
     } catch (error) {
         next(error);
     }
 };
 
-const verifyPayment = async (req: Request, res: Response, next: NextFunction) => {
+const verifyPaymentController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log("Inside verify payment");
-        console.log(req.body);
-        const { token, amount, product_identity, idx }: { token: string; amount: number; product_identity: string; idx: string } = req.body;
+        const {
+            token,
+            amount,
+            product_identity,
+            idx,
+            userId
+        }: { token: string; amount: number; product_identity: string; idx: string; userId: ObjectId } = req.body;
         let config = {
             headers: {
                 Authorization: `Key ${process.env.KHALTI_SECRET_KEY}`
@@ -26,24 +40,21 @@ const verifyPayment = async (req: Request, res: Response, next: NextFunction) =>
             },
             config
         );
-        console.log(resBody.data);
 
-        // // TODO : manage user
-        // let user: string = req.cookies.uid;
-        // await prisma.transaction.create({
-        //     data: {
-        //         amount: amount,
-        //         userId: user,
-        //         productsId: product_identity,
-        //         khalti_transaction_id: idx
-        //     }
-        // });
+        // // TODO : manage user and save transaction logs in db
+        const newTransaction = await Transaction.create({
+            amount: amount,
+            userId: userId,
+            transactionDate: new Date(),
+            remarks: "Khalti Load"
+        });
         return res.json({
-            message: "Payment Successful"
+            message: "Payment Successful",
+            data: newTransaction
         });
     } catch (error) {
         next(error);
     }
 };
 
-export default { getTransactionHistory, verifyPayment };
+export default { getTransactionHistory, verifyPaymentController };

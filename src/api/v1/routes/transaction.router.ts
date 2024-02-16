@@ -4,8 +4,8 @@ import transactionController from "../controllers/transaction.controller";
 
 const router = Router();
 
-router.get("/",transactionController.getTransactionHistory)
+router.get("/:userId/history", transactionController.getTransactionHistory);
 
-router.post("/verify-payment", transactionController.verifyPayment)
+router.post("/verify-payment", transactionController.verifyPaymentController);
 
 export default router;
