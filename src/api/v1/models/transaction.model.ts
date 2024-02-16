@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
 export interface ITransaction {
     amount: number;
@@ -13,23 +13,26 @@ const transactionSchema = new Schema(
     {
         amount: {
             type: Number,
-            required: [true, 'Amount is required']
+            required: [true, "Amount is required"]
         },
         userId: {
             type: Schema.Types.ObjectId,
-            reference: 'User',
-            required: [true, 'User Id is required']
-        },
-        transactionType: {
-            type: String,
-            required: [true, 'Transaction Type is required']
+            reference: "User",
+            required: [true, "User Id is required"]
         },
         transactionDate: {
             type: Date,
-            required: [true, 'Transaction Date is required']
+            required: [true, "Transaction Date is required"]
+        },
+        remarks: {
+            type: String,
+            required: false,
+            default: ""
         }
     },
     { timestamps: true }
 );
 
-const Transaction = model<ITransaction>('Transaction', transactionSchema);
+const Transaction = model<ITransaction>("Transaction", transactionSchema);
+
+export default Transaction;

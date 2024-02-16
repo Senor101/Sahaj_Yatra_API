@@ -90,7 +90,7 @@ const verifyUserController = async (req: Request, res: Response, next: NextFunct
         const { rfidNumber } = req.body;
         if (!rfidNumber) return throwError(req, res, "RFID tag number is required", 400);
 
-        const existingUser = await User.findById(userId).select("-password").lean();
+        const existingUser = await User.findById(userId).select("-password");
 
         if (!existingUser) return throwError(req, res, "User not fond", 404);
         if (existingUser.isVerified) return throwError(req, res, "User already Verified", 400);

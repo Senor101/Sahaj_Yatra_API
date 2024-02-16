@@ -83,8 +83,7 @@ const updateBusCurrentLocation = async (req: Request, res: Response, next: NextF
     try {
         let { busId, latitude, longitude } = req.query;
         if (!busId) return throwError(req, res, "Bus ID is required!", 400);
-        const requiredBus = await Bus.findById(busId).lean();
-        console.log(requiredBus);
+        const requiredBus = await Bus.findById(busId);
         if (!latitude || !longitude) return throwError(req, res, "Latitude and Longitude are required!", 400);
         if (!requiredBus) {
             return throwError(req, res, "BUS with given ID not found", 404);
@@ -96,7 +95,7 @@ const updateBusCurrentLocation = async (req: Request, res: Response, next: NextF
             longitude: parsedLongitude
         };
         requiredBus.currentLocation = newLocation;
-        // await requiredBus.save();
+        await requiredBus.save();
         return res.status(200).json({
             message: "Current Bus location updated.",
             data: requiredBus
