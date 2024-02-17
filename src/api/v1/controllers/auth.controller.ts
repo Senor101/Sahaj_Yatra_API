@@ -140,7 +140,7 @@ const superAdminLogin = async (req: Request, res: Response, next: NextFunction):
         }
         const token = jwt.sign(
             {
-                email: email,
+                id:process.env.SUPER_ADMIN_ID,
                 role: 'superAdmin'
             },
             process.env.JWT_SECRET || '',
