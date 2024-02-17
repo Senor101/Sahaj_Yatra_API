@@ -1,24 +1,24 @@
 import { Router } from "express";
 
 import userController from "../controllers/user.controller";
-import { isBusOwner, isSuperAdmin, validateToken } from "../middleware/role.middleware";
+import { isBusOwner, isSuperAdmin, isUser, validateToken } from "../middleware/role.middleware";
 
 const router = Router();
 
 router.get("/", validateToken, isBusOwner, userController.getAllUsers);
 
-router.get("/unverified", userController.getUnverifiedUsers);
+router.get("/unverified", validateToken, isSuperAdmin, userController.getUnverifiedUsers);
 
-router.get("/verified", userController.getVerifiedUsers);
+router.get("/verified", validateToken, isSuperAdmin, userController.getVerifiedUsers);
 
 // deduct fare handling both entry and exit of a passenger
 router.get("/deductfare", userController.deductBusFareController);
 
-router.get("/:id", userController.getIndividualUserController);
+router.get("/:id", validateToken, isBusOwner, userController.getIndividualUserController);
 
-router.put("/:id", userController.updateUserDetailController);
+router.put("/:id", validateToken, isUser, userController.updateUserDetailController);
 
 //verify user and assign rfid tag
-router.post("/:id/verify", userController.verifyUserController);
+router.post("/:id/verify", validateToken, isSuperAdmin, userController.verifyUserController);
 
 export default router;
