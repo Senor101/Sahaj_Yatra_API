@@ -1,12 +1,13 @@
 import { Router } from "express";
 
 import busController from "../controllers/bus.controller";
+import { isBusOwner, validateToken } from "../middleware/role.middleware";
 
 const router = Router();
 
 router.get("/", busController.getAllBusesController);
 
-router.post("/", busController.registerBus);
+router.post("/", validateToken, isBusOwner, busController.registerBus);
 
 // update your bus location with request from nodemcu providing latitude and longitude in queries
 router.get("/location", busController.updateBusCurrentLocation);
