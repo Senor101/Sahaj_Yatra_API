@@ -38,6 +38,16 @@
 
 ---
 
+## Accessing protected routes
+
+Super admin will have access to every endpoints. For the rest user types the API will throw forbidden (403) when trying to access unauthorized routes.
+
+For endpoints requiring authentication and authorization include Authorization headers in your requests. The general pattern of doing such is:
+
+| Key           | Value                                                            | Description                                 |
+| ------------- | ---------------------------------------------------------------- | ------------------------------------------- |
+| Authorization | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJlMGJiOTY1 | include the token obtained while logging in |
+
 ## AUTH
 
 ### 1. ADMIN LOGIN
