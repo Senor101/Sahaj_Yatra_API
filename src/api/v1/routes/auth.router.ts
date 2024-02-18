@@ -2,13 +2,15 @@ import { Router } from "express";
 
 import authController from "../controllers/auth.controller";
 import { validateToken } from "../middleware/role.middleware";
+import { validateUserRegister } from "../validators/requestValidator.utils";
+import checkValidation from "../middleware/jsonbody.middleware";
 
 const router = Router();
 
 //USER AUTH ROUTES
 router.post("/login", authController.userLogin);
 
-router.post("/register", authController.userRegister);
+router.post("/register", validateUserRegister, checkValidation, authController.userRegister);
 
 //ADMIN AUTH ROUTES
 router.post("/login/admin", authController.busOwnerLogin);
