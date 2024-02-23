@@ -7,6 +7,8 @@ const router = Router();
 
 router.get("/", validateToken, isBusOwner, userController.getAllUsers);
 
+router.get("/info", validateToken, userController.getUserInfo);
+
 router.get("/unverified", validateToken, isSuperAdmin, userController.getUnverifiedUsers);
 
 router.get("/verified", validateToken, isSuperAdmin, userController.getVerifiedUsers);
