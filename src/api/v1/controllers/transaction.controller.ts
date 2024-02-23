@@ -5,7 +5,7 @@ import { ObjectId } from "mongoose";
 
 const getTransactionHistory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { userId } = req.params;
+        const userId = res.locals.user.id;
         const transactionHistory = await Transaction.find({
             userId: userId
         });
@@ -26,7 +26,13 @@ const verifyPaymentController = async (req: Request, res: Response, next: NextFu
             product_identity,
             idx,
             userId
-        }: { token: string; amount: number; product_identity: string; idx: string; userId: ObjectId } = req.body;
+        }: {
+            token: string;
+            amount: number;
+            product_identity: string;
+            idx: string;
+            userId: ObjectId;
+        } = req.body;
         let config = {
             headers: {
                 Authorization: `Key ${process.env.KHALTI_SECRET_KEY}`

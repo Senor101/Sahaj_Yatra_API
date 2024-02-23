@@ -7,9 +7,16 @@ import { IUser } from "../models/user.model";
 import throwError from "../utils/throwError.util";
 import { BusOwner, IBusOwner } from "../models/bus.model";
 
-const userLogin = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+const userLogin = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<Response | void> => {
     try {
-        const { phoneNumber, password }: { phoneNumber: string; password: string } = req.body;
+        const {
+            phoneNumber,
+            password
+        }: { phoneNumber: string; password: string } = req.body;
         const user = await User.findOne({ phoneNumber: phoneNumber });
         if (!user) {
             return throwError(req, res, "Invalid Credentials", 404);
@@ -23,9 +30,13 @@ const userLogin = async (req: Request, res: Response, next: NextFunction): Promi
         if (!isPasswordValid) {
             return throwError(req, res, "Invalid Credentials", 400);
         }
-        const token = jwt.sign({ id: user?._id, role: "user" }, process.env.JWT_SECRET || "", {
-            expiresIn: "1d"
-        });
+        const token = jwt.sign(
+            { id: user?._id, role: "user" },
+            process.env.JWT_SECRET || "",
+            {
+                expiresIn: "1d"
+            }
+        );
         return res.status(200).json({
             message: "User Login Successful",
             token: token,
@@ -37,13 +48,19 @@ const userLogin = async (req: Request, res: Response, next: NextFunction): Promi
     }
 };
 
-const userRegister = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+const userRegister = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<Response | void> => {
     try {
         const userBody: IUser = req.body;
         if (!userBody.password) {
             return throwError(req, res, "Password is required", 400);
         }
-        const existingUser = await User.findOne({ citizenshipNumber: userBody.citizenshipNumber });
+        const existingUser = await User.findOne({
+            citizenshipNumber: userBody.citizenshipNumber
+        });
         if (existingUser) {
             return throwError(req, res, "User already registered", 409);
         }
@@ -63,16 +80,26 @@ const userRegister = async (req: Request, res: Response, next: NextFunction): Pr
     }
 };
 
-const busOwnerLogin = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+const busOwnerLogin = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<Response | void> => {
     try {
-        const { phoneNumber, password }: { phoneNumber: string | number; password: string } = req.body;
+        const {
+            phoneNumber,
+            password
+        }: { phoneNumber: string | number; password: string } = req.body;
         const existingBusOwner = await BusOwner.findOne({
             phoneNumber: phoneNumber
         });
         if (!existingBusOwner) {
             return throwError(req, res, "Invalid Credentials", 404);
         }
-        const isPasswordValid = await bcrypt.compare(password, existingBusOwner?.password || "");
+        const isPasswordValid = await bcrypt.compare(
+            password,
+            existingBusOwner?.password || ""
+        );
         if (!isPasswordValid) {
             return throwError(req, res, "Invalid Credentials", 403);
         }
@@ -95,11 +122,18 @@ const busOwnerLogin = async (req: Request, res: Response, next: NextFunction): P
     }
 };
 
-const busOwnerRegister = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+const busOwnerRegister = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<Response | void> => {
     try {
         const busOwnerBody: IBusOwner = req.body;
         const existingBusOwner = await BusOwner.findOne({
-            $or: [{ phoneNumber: busOwnerBody.phoneNumber }, { email: busOwnerBody.email }]
+            $or: [
+                { phoneNumber: busOwnerBody.phoneNumber },
+                { email: busOwnerBody.email }
+            ]
         });
         if (!busOwnerBody.password) {
             return throwError(req, res, "Password is required", 400);
@@ -123,19 +157,28 @@ const busOwnerRegister = async (req: Request, res: Response, next: NextFunction)
     }
 };
 
-const superAdminLogin = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+const superAdminLogin = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<Response | void> => {
     try {
-        const { email, password }: { email: string; password: string } = req.body;
+        const { email, password }: { email: string; password: string } =
+            req.body;
         if (!email || !password) {
             return throwError(req, res, "Email and Password are required", 400);
         }
         if (email !== process.env.SUPER_ADMIN_EMAIL) {
             return throwError(req, res, "Invalid Credentials", 403);
         }
-        if (!process.env.PASSWORD) return throwError(req, res, "Server error", 500);
-        const isPasswordValid = await bcrypt.compare(password, process.env.PASSWORD);
+        if (!process.env.PASSWORD)
+            return throwError(req, res, "Server error", 500);
+        const isPasswordValid = await bcrypt.compare(
+            password,
+            process.env.PASSWORD
+        );
         if (!isPasswordValid) {
-            return throwError(req, res, "pInvalid Credentials", 403);
+            return throwError(req, res, "Invalid Credentials", 403);
         }
         const token = jwt.sign(
             {
@@ -156,7 +199,11 @@ const superAdminLogin = async (req: Request, res: Response, next: NextFunction):
     }
 };
 
-const userLogoutController = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+const userLogoutController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<Response | void> => {
     try {
         return res.status(200).json({
             message: "User logged out successfully"
@@ -167,4 +214,11 @@ const userLogoutController = async (req: Request, res: Response, next: NextFunct
     }
 };
 
-export default { userLogin, userRegister, busOwnerLogin, busOwnerRegister, superAdminLogin, userLogoutController };
+export default {
+    userLogin,
+    userRegister,
+    busOwnerLogin,
+    busOwnerRegister,
+    superAdminLogin,
+    userLogoutController
+};
