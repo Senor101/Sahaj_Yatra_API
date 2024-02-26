@@ -2,7 +2,8 @@ import { Request, Response, NextFunction, response } from "express";
 import User from "@models/user.model"
 import throwError from "@utils/throwError.util";
 import bcrypt from "bcrypt";
-import { BusOwner } from '@models/bus.model'
+import { BusOwner } from '@models/bus.model';
+import Transaction from "@/models/transaction.model";
 import getDistanceFromLatLonInKm from "@/helpers/distance";
 import { calculateFare } from "@/helpers/fare";
 
@@ -198,6 +199,15 @@ const deductBusFareController = async (
             requiredResponse.message = "Get out of the bus";
             requiredResponse.valid = true;
             requiredResponse.newAmount = existingUser.amount;
+            
+            // save transaction details
+            await Transaction.create({
+                amount: calculatedFare,
+                userId: existingUser._id,
+                transactionType: "debit",
+                transactionDate: new Date(),
+                remarks: "Bus Fare"
+            })
         }
         await existingUser.save();
         return res.status(200).json(requiredResponse);
