@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction, response } from "express";
-import User from "../models/user.model";
-import throwError from "../utils/throwError.util";
+import User from "@models/user.model"
+import throwError from "@utils/throwError.util";
 import bcrypt from "bcrypt";
-import { BusOwner } from "../models/bus.model";
+import { BusOwner } from '@models/bus.model'
 
 function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number) {
     var R = 6371; // Radius of the earth in km

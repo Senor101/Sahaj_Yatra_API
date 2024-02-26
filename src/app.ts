@@ -6,8 +6,8 @@ require('dotenv').config();
 
 const app = express();
 
-import apiRouter from './api/v1/api';
-import customErrorHandler from './api/v1/middleware/errorhandler.middleware';
+import apiRouter from '@/api';
+import customErrorHandler from '@middlewares/errorhandler.middleware';
 
 app.use(helmet());
 
