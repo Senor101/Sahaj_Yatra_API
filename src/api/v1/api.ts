@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import { Router } from "express";
 
 //import routers here
-import authRouter from "./routes/auth.router";
-import transactionRouter from "./routes/transaction.router";
-import userRouter from "./routes/user.router";
-import busRouter from "./routes/bus.router";
+import authRouter from "@routes/auth.router";
+import transactionRouter from "@routes/transaction.router";
+import userRouter from "@routes/user.router";
+import busRouter from "@routes/bus.router";
 
 const router = Router();
 

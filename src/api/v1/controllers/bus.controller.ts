@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-import { IBus, Bus, BusOwner, DailyEarning } from "../models/bus.model";
-import throwError from "../utils/throwError.util";
+import { IBus, Bus, BusOwner, DailyEarning } from "@models/bus.model";
+import throwError from "@utils/throwError.util";
 
 const getBusesForIndividualBusOwnerController = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     try {

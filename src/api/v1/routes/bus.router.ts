@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-import busController from "../controllers/bus.controller";
-import { isBusOwner, validateToken } from "../middleware/role.middleware";
-import checkValidation from "../middleware/jsonbody.middleware";
-import { validateBusRegister } from "../validators/requestValidator.utils";
+import busController from "@controllers/bus.controller";
+import { isBusOwner, validateToken } from "@middlewares/role.middleware";
+import checkValidation from "@middlewares/jsonbody.middleware";
+import { validateBusRegister } from "@validators/requestValidator.utils";
 
 const router = Router();
 
