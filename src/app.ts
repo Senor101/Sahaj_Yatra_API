@@ -11,11 +11,18 @@ import customErrorHandler from './api/v1/middlewares/errorhandler.middleware';
 
 app.use(helmet());
 
-const allowedOrigin = ["http://localhost:3000", "https://digital-bus-next.vercel.app/"];
+const allowedOrigin = [process.env.DEV_FRONTEND_URI, process.env.PROD_FRONTEND_URI];
 
-var corsOptions = {
-    origin: allowedOrigin,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+
+var corsOptions :any= {
+    origin: function (origin:string, callback:Function) {
+        if (allowedOrigin.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(null, false);
+        }
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
     preflightcontinue: true
 };
