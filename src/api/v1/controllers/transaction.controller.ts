@@ -53,6 +53,7 @@ const verifyPaymentController = async (req: Request, res: Response, next: NextFu
         const newTransaction = await Transaction.create({
             amount: amount,
             userId: userId,
+            transactionType: "credit",
             transactionDate: new Date(),
             remarks: "Khalti Load"
         });

@@ -2,23 +2,10 @@ import { Request, Response, NextFunction, response } from "express";
 import User from "@models/user.model"
 import throwError from "@utils/throwError.util";
 import bcrypt from "bcrypt";
-import { BusOwner } from '@models/bus.model'
-
-function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number) {
-    var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(lat2 - lat1); // deg2rad below
-    var dLon = deg2rad(lon2 - lon1);
-    var a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c; // Distance in km
-    return d;
-}
-
-function deg2rad(deg: number) {
-    return deg * (Math.PI / 180);
-}
+import { BusOwner } from '@models/bus.model';
+import Transaction from "@/models/transaction.model";
+import getDistanceFromLatLonInKm from "@/helpers/distance";
+import { calculateFare } from "@/helpers/fare";
 
 const getUserInfo = async (
     req: Request,
@@ -121,18 +108,6 @@ const getVerifiedUsers = async (req: Request, res: Response, next: NextFunction)
     }
 };
 
-// // initial request when a user enters a bus and scans rfid tag
-// const checkValidity = async(req:Request, res:Response, next: NextFunction) : Promise<Response | void> => {
-//     try{
-//         const {rfid, latitude, longitude} = req.query;
-//         // check if rfid is valid and has minimum balance
-//         return res.status(200).json({
-//             valid:true,
-//         })
-//     }catch(error){
-//         next(error)
-//     }
-// }
 
 //verify and assign rfid tag to requesting user
 const verifyUserController = async (
@@ -219,11 +194,20 @@ const deductBusFareController = async (
                 existingUser.location.currentLatitude,
                 existingUser.location.currentLongitude
             );
-            let calculatedFare: number = 10 * totalDistance;
+            const calculatedFare = calculateFare(totalDistance);
             existingUser.amount -= calculatedFare;
             requiredResponse.message = "Get out of the bus";
             requiredResponse.valid = true;
             requiredResponse.newAmount = existingUser.amount;
+            
+            // save transaction details
+            await Transaction.create({
+                amount: calculatedFare,
+                userId: existingUser._id,
+                transactionType: "debit",
+                transactionDate: new Date(),
+                remarks: "Bus Fare"
+            })
         }
         await existingUser.save();
         return res.status(200).json(requiredResponse);
