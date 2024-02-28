@@ -11,7 +11,7 @@ import customErrorHandler from './api/v1/middlewares/errorhandler.middleware';
 
 app.use(helmet());
 
-const allowedOrigin = ["http://localhost:3000", "https://digital-bus-system.vercel.app/"];
+const allowedOrigin = ["http://localhost:3000", "https://digital-bus-next.vercel.app/"];
 
 var corsOptions = {
     origin: function (origin: any, callback: any) {
