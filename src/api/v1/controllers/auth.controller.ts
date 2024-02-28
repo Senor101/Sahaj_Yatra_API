@@ -37,6 +37,8 @@ const userLogin = async (
                 expiresIn: "1d"
             }
         );
+        user.token = token;
+        await user.save();
         return res.status(200).json({
             message: "User Login Successful",
             token: token,
@@ -111,6 +113,8 @@ const busOwnerLogin = async (
             process.env.JWT_SECRET || "",
             { expiresIn: "1d" }
         );
+        existingBusOwner.token=token;
+        await existingBusOwner.save();
         return res.status(200).json({
             message: "Admin Login Successful",
             token: token,
@@ -205,6 +209,16 @@ const userLogoutController = async (
     next: NextFunction
 ): Promise<Response | void> => {
     try {
+        const userId = res.locals.user.id;
+        if(res.locals.user.role === "user"){
+            if((await User.findById(userId))?.token === null) 
+                return throwError(req, res, "Invalid or expired token", 400);
+            await User.findByIdAndUpdate(userId, { token: null });
+        }else if(res.locals.user.role === "busOwner"){
+            if ((await BusOwner.findById(userId))?.token === null)
+                return throwError(req, res, "Invalid or expired token", 400);
+            await BusOwner.findByIdAndUpdate(userId, { token: null });
+        }
         return res.status(200).json({
             message: "User logged out successfully"
         });

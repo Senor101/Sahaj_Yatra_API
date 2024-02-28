@@ -207,7 +207,7 @@ const deductBusFareController = async (
                 transactionType: "debit",
                 transactionDate: new Date(),
                 remarks: "Bus Fare"
-            })
+            });
         }
         await existingUser.save();
         return res.status(200).json(requiredResponse);

@@ -20,6 +20,7 @@ export interface IBusOwner extends Document {
     phoneNumber: string;
     password?: string;
     buses?: [IBus];
+    token? : string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -122,7 +123,11 @@ const busOwnerSchema: Schema = new Schema(
                 type: Schema.ObjectId,
                 ref: "Bus"
             }
-        ]
+        ],
+        token : {
+            type: String,
+            default: null
+        }
         // sales: [DailyEarning],
     },
     { timestamps: true }

@@ -17,7 +17,8 @@ export interface IUser extends Document {
         lastLongitude:number,
         currentLatitude: number,
         currentLongitude:number
-    }
+    },
+    token?: string;
 }
 
 const userLocationSchema = new Schema({
@@ -84,6 +85,10 @@ const userSchema = new Schema(
             type: Boolean,
             index: true,
             default: false
+        },
+        token:{
+            type: String,
+            default: null
         }
     },
     {

@@ -12,15 +12,16 @@ const checkRole = async (req: Request, res: Response, next: NextFunction, role: 
             }
             return next();
         }
+        console.log(res.locals.user);
         if (res.locals.user.role !== role) return throwError(req, res, "Unauthorized to access this endpoint", 403);
         switch (role) {
             case "user":
                 const validUser = await User.findById(res.locals.user.id);
-                if (!validUser) return throwError(req, res, "Invalid token credentials", 403);
+                if (!validUser || validUser.token === null) return throwError(req, res, "Invalid token credentials", 403);
                 break;
             case "busOwner":
                 const validBusOwner = await BusOwner.findById(res.locals.user.id);
-                if (!validBusOwner) return throwError(req, res, "Invalid token credentials", 403);
+                if (!validBusOwner || validBusOwner === null) return throwError(req, res, "Invalid token credentials", 403);
                 break;
             default:
                 return throwError(req, res, "Invalid role based token", 403);

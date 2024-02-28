@@ -227,9 +227,49 @@ URL: {{API_URL}}/auth/login/superadmin
 }
 ```
 
+### 6. GET USER INFO FROM TOKEN
+
+
+
+***Endpoint:***
+
+```bash
+Method: GET
+Type: 
+URL: {{API_URL}}/user/info
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| Authorization | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Yzc2ZTdmODg5Mjc3MjlkNDI0MzcxZSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzA4NzA2MjkxLCJleHAiOjE3MDg3OTI2OTF9.1_sY8OROmv6XcL9-HbDgTm1S0D2qvPHhi5iUXXqhq4I |  |
+
+
+
+### 7. LOGOUT
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: 
+URL: {{API_URL}}/auth/logout/
+```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| Authorization | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Yzc2ZTdmODg5Mjc3MjlkNDI0MzcxZSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzA5MTI4MTI0LCJleHAiOjE3MDkyMTQ1MjR9.fQxGNIonNjkqnx5J4rKJdlmfAC4kAQ37AnQLjRvcA50 |  |
+
+
 ## TRANSACTION
 
-TRANSACTION API COMING SOON
 
 ### 1. GET TRANSACTION HISTORY
 
@@ -237,19 +277,52 @@ TRANSACTION API COMING SOON
 
 ```bash
 Method: GET
-Type:
-URL: {{API_URI}}
+Type: 
+URL: {{API_URI}}/transaction/history
 ```
+
+
+***Headers:***
+
+| Key | Value | Description |
+| --- | ------|-------------|
+| Authorization | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Yzc2ZTdmODg5Mjc3MjlkNDI0MzcxZSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzA5MTI4MTI0LCJleHAiOjE3MDkyMTQ1MjR9.fQxGNIonNjkqnx5J4rKJdlmfAC4kAQ37AnQLjRvcA50 |  |
+
+
+**_Response:_**
+
+```js
+{
+    "message": "Transaction History Fetched Successfully",
+    "data": [
+        {
+            "_id": "65df3b4c9f869e5f29f7faef",
+            "amount": 20,
+            "userId": "65c76e7f88927729d424371e",
+            "transactionDate": "2024-02-28T13:55:24.020Z",
+            "transactionType": "debit",
+            "remarks": "Bus Fare",
+            "createdAt": "2024-02-28T13:55:24.024Z",
+            "updatedAt": "2024-02-28T13:55:24.024Z",
+            "__v": 0
+        }
+    ]
+}
+```
+
+
 
 ### 2. KHALTI TRANSACTION
 
-**_Endpoint:_**
+***Endpoint:***
 
 ```bash
 Method: GET
-Type:
-URL:
+Type: 
+URL: {{API_URI}}/transaction/verify-payment
 ```
+
+_This should be integrated with frontend khalti implementation after khalti sends a idx at frontend._
 
 ## USERS
 

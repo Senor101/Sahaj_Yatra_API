@@ -24,11 +24,10 @@ const transactionSchema = new Schema(
             type: Date,
             required: [true, "Transaction Date is required"]
         },
-        transasctionType: {
+        transactionType: {
             type: String,
             required: [true, "Transaction Type is required"],
             enum: ["credit", "debit"]
-        
         },
         remarks: {
             type: String,
