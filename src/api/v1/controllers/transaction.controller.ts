@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import axios from "axios";
 import { ObjectId } from "mongoose";
 
-import Transaction from "@models/transaction.model";
+import Transaction from "../models/transaction.model";
 
 
 const getTransactionHistory = async (req: Request, res: Response, next: NextFunction) => {

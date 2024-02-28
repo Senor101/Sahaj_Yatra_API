@@ -1,5 +1,5 @@
-import { BusOwner } from '@models/bus.model';
-import User from '@models/user.model';
+import { BusOwner } from '../models/bus.model';
+import User from '../models/user.model';
 
 export const userExists = async (
   phoneNumber: string | number

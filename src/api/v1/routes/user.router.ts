@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import userController from "@controllers/user.controller";
-import { isBusOwner, isSuperAdmin, isUser, validateToken } from "@middlewares/role.middleware";
+import userController from "../controllers/user.controller";
+import { isBusOwner, isSuperAdmin, isUser, validateToken } from "../middlewares/role.middleware";
 
 const router = Router();
 

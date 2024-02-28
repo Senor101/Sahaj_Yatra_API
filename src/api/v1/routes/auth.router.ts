@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-import authController from "@controllers/auth.controller";
-import { validateToken } from "@middlewares/role.middleware";
-import { validateUserRegister } from "@validators/requestValidator.utils";
-import checkValidation from "@middlewares/jsonbody.middleware";
+import authController from '../controllers/auth.controller'
+import { validateToken } from "../middlewares/role.middleware";
+import { validateUserRegister } from "../validators/requestValidator.utils";
+import checkValidation from "../middlewares/jsonbody.middleware";
 
 const router = Router();
 

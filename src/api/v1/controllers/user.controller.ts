@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction, response } from "express";
-import User from "@models/user.model"
-import throwError from "@utils/throwError.util";
+import User from "../models/user.model"
+import throwError from "../utils/throwError.util";
 import bcrypt from "bcrypt";
-import { BusOwner } from '@models/bus.model';
-import Transaction from "@/models/transaction.model";
-import getDistanceFromLatLonInKm from "@/helpers/distance";
-import { calculateFare } from "@/helpers/fare";
+import { BusOwner } from '../models/bus.model';
+import Transaction from "../models/transaction.model";
+import getDistanceFromLatLonInKm from "../helpers/distance";
+import { calculateFare } from "../helpers/fare";
 
 const getUserInfo = async (
     req: Request,

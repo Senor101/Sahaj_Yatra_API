@@ -2,10 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import User from "@models/user.model";
-import { IUser } from "@models/user.model";
-import throwError from "@utils/throwError.util";
-import { BusOwner, IBusOwner } from "@models/bus.model";
+import User from "../models/user.model";
+import { IUser } from "../models/user.model";
+import throwError from "../utils/throwError.util";
+import { BusOwner, IBusOwner } from "../models/bus.model";
 
 const userLogin = async (
     req: Request,

@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import transactionController from "@controllers/transaction.controller";
-import { isUser, validateToken } from "@middlewares/role.middleware";
+import transactionController from "../controllers/transaction.controller";
+import { isUser, validateToken } from "../middlewares/role.middleware";
 
 const router = Router();
 
