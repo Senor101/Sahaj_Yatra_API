@@ -14,13 +14,7 @@ app.use(helmet());
 const allowedOrigin = ["http://localhost:3000", "https://digital-bus-next.vercel.app/"];
 
 var corsOptions = {
-    origin: function (origin: any, callback: any) {
-        if (allowedOrigin.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(null, false);
-        }
-    },
+    origin: allowedOrigin,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
     preflightcontinue: true
