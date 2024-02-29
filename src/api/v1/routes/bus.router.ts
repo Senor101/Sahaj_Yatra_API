@@ -18,4 +18,5 @@ router.get("/:busId", busController.getIndividualBusController);
 
 router.get("/:busId/location", busController.getBusLocation);
 
+
 export default router;

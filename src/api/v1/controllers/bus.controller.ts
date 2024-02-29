@@ -35,7 +35,9 @@ const getIndividualBusController = async (req: Request, res: Response, next: Nex
 
 const getAllBusesController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const buses = await Bus.find().lean();
+        const buses = await Bus.find({
+            busOwner : res.locals.user
+        }).lean();
         return res.status(200).json({
             message: "Buses fetched",
             count: buses.length,

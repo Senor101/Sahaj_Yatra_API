@@ -26,6 +26,11 @@ const userLogin = async (
                 message: "Password is required"
             });
         }
+        if(!user.isVerified) {
+            return res.status(400).json({
+                message: "User is not verified, Contact super admin to verify your account"
+            })
+        }
         const isPasswordValid = await bcrypt.compare(password, user?.password);
         if (!isPasswordValid) {
             return throwError(req, res, "Invalid Credentials", 400);
