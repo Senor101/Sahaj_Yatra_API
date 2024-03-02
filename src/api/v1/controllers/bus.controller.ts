@@ -5,16 +5,18 @@ import throwError from "../utils/throwError.util";
 
 const getBusesForIndividualBusOwnerController = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     try {
-        const busOwnerID = req.user;
+        const busOwnerID = res.locals.user.id
         const busOwner = await BusOwner.findById(busOwnerID).lean();
         if (!busOwner) {
             return throwError(req, res, "Invalid Bus Owner", 404);
         }
+        const buses = await Bus.find({ busOwner: busOwnerID }).lean();
         return res.status(200).json({
             message: "Buses fetched Succesfully",
-            data: busOwner?.buses
+            data: buses
         });
     } catch (error) {
+        console.error(error)
         next(error);
     }
 };
@@ -35,9 +37,7 @@ const getIndividualBusController = async (req: Request, res: Response, next: Nex
 
 const getAllBusesController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const buses = await Bus.find({
-            busOwner : res.locals.user
-        }).lean();
+        const buses = await Bus.find().lean();
         return res.status(200).json({
             message: "Buses fetched",
             count: buses.length,
@@ -51,18 +51,18 @@ const getAllBusesController = async (req: Request, res: Response, next: NextFunc
 const registerBus = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     try {
         const busBody: IBus = req.body;
-        const busId = res.locals.user.id;
+        const busOwnerId = res.locals.user.id;
         const existingBus = await Bus.findOne({ busNumber: busBody.busNumber }).lean();
         if (existingBus) {
             return throwError(req, res, "Bus with provided bus number exists.", 409);
         }
-        const newBus = await Bus.create(busBody);
+        const newBus = await Bus.create({...busBody, busOwner: busOwnerId});
+        const owner = await BusOwner.findById(busOwnerId)
+        owner?.buses?.push(newBus)
+        await owner?.save();
         return res.status(201).json({
             message: "New Bus registered",
-            data: {
-                ...newBus,
-                busOwner:busId
-            }
+            data: newBus
         });
     } catch (error) {
         next(error);

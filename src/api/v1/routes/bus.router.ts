@@ -9,6 +9,8 @@ const router = Router();
 
 router.get("/", busController.getAllBusesController);
 
+router.get('/owner',validateToken, isBusOwner, busController.getBusesForIndividualBusOwnerController)
+
 router.post("/", validateBusRegister, checkValidation, validateToken, isBusOwner, busController.registerBus);
 
 // update your bus location with request from nodemcu providing latitude and longitude in queries

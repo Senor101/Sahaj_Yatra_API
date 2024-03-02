@@ -6,7 +6,7 @@ export default async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(err);
+  console.error(err);
   return res.status((err as any).status || 500).json({
     error: err.message || 'Internal Server Error',
   });
