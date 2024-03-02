@@ -16,10 +16,14 @@ const getUserInfo = async (
         const userId = res.locals.user.id;
         const role = res.locals.user.role;
         try {
-            let requiredUser: object | null = {};
+            let requiredUser: any = {};
             switch (role) {
                 case "user":
                     requiredUser = await User.findById(userId).select("-password").lean();
+                    requiredUser = {
+                        ...requiredUser,
+                        amount:Math.round(requiredUser.amount)
+                    }
                     break;
                 case "busOwner":
                     requiredUser = await BusOwner.findById(userId).select("-password").lean();

@@ -1,7 +1,7 @@
 import {Router} from 'express'
 
-import {getBusownerDashboardController} from '../controllers/dashboard.controller';
-import { isBusOwner, validateToken } from '../middlewares/role.middleware';
+import {getBusownerDashboardController, getUserDashboardController} from '../controllers/dashboard.controller';
+import { isBusOwner, isUser, validateToken } from '../middlewares/role.middleware';
 
 const dashboardRouter = Router()
 
@@ -10,6 +10,13 @@ dashboardRouter.get(
   validateToken,
   isBusOwner,
   getBusownerDashboardController
-  )
+)
+
+dashboardRouter.get(
+  '/user',
+  validateToken,
+  isUser,
+  getUserDashboardController
+)
 
 export default dashboardRouter;

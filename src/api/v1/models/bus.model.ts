@@ -29,7 +29,14 @@ export interface IBusOwner extends Document {
     createdAt: Date;
     updatedAt: Date;
 }
-
+const saleSchema = new Schema({
+    amount: {
+        type: Number,
+    },
+    date: {
+        type: Date,
+    }
+}, { _id: false });
 
 const busSchema: Schema = new Schema(
     {
@@ -69,14 +76,15 @@ const busSchema: Schema = new Schema(
             ref: "BusOwner",
             required: [true, "Bus Owner is required"]
         },
-        sale: [{
-            amount: {
-                type:Number,
-            },
-            data: {
-                type: Date
-            }
-        }]
+        sale: {
+            type: [saleSchema],
+            default: [
+                {
+                    amount: 0,
+                    date: new Date()
+                }
+            ]
+        }
     },
     { timestamps: true }
 );

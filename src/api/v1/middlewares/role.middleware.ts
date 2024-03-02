@@ -12,7 +12,6 @@ const checkRole = async (req: Request, res: Response, next: NextFunction, role: 
             }
             return next();
         }
-        console.log(res.locals.user);
         if (res.locals.user.role !== role) return throwError(req, res, "Unauthorized to access this endpoint", 403);
         switch (role) {
             case "user":

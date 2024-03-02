@@ -11,10 +11,23 @@ const getTransactionHistory = async (req: Request, res: Response, next: NextFunc
         const userId = res.locals.user.id;
         const transactionHistory = await Transaction.find({
             userId: userId
-        });
+        }).lean();
+
+        const udpatedTransactionHistory = transactionHistory.map(t => {
+            var date = new Date(t.transactionDate);
+            var newDate = date.toISOString().split('T')[0]
+
+            // console.log(newDate);
+            return {
+                ...t,
+                transactionDate: newDate,
+                amount: Math.round(t.amount)
+            }
+        })
+
         return res.status(200).json({
             message: "Transaction History Fetched Successfully",
-            data: transactionHistory
+            data: udpatedTransactionHistory
         });
     } catch (error) {
         next(error);

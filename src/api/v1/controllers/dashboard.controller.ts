@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { BusOwner, Bus } from "../models/bus.model";
 import throwError from "../utils/throwError.util";
+import saleMapper from "../helpers/salemapper";
+import Transaction from "../models/transaction.model";
 
 export const getBusownerDashboardController = async (req: Request, res: Response, next: NextFunction) => {
   try{
@@ -8,43 +10,49 @@ export const getBusownerDashboardController = async (req: Request, res: Response
     const busOwner = await BusOwner.findById(busOwnerId);
     if(!busOwner) return throwError(req, res, "Invalid Bus Owner", 404);
 
-    const dashboardData = {
-      totalDailySale: 100,
-      totalYearlySale: 100,
-      totalMonthlySale: 100,
-      graphData: {
-        daily: {
-          bus1: 100,
-          bus2: 200
-        },
-        monthly: {
-          bus1: 100,
-          bus2: 200
-        },
-        yearly: {
-          bus1: 100,
-          bus2: 200
-        }
-      }
-    }
-
-    const todayDate = new Date();
-    const day = todayDate.getDate();
-    const month = todayDate.getMonth();
-    const year = todayDate.getFullYear();
-    console.log(day, month, year)
-
     const buses = await Bus.find({busOwner: busOwnerId}).lean();
-    const dailySale = buses.map(bus => {
-      let sale = 0;
-      // bus.sale.map(s => )
+    let totalSaleData : {date: Date, amount:number}[] = [];
+
+    buses.forEach(bus => {
+      if(bus.sale)
+      {bus.sale.forEach(s => {
+        totalSaleData.push({
+          amount: s.amount,
+          date: s.date
+        })
+      })}
     })
 
+    const overAllSalesData = saleMapper(totalSaleData)
 
+    const busMap = buses.map(bus => {
+      return {
+        busNumber: bus.busNumber, 
+        busSale: bus.sale
+      }
+    })
 
-    console.log(buses)
+    const newMap :any = []
+    let graphData : {busName:string, sale:object}[]= [];
 
-
+    busMap.forEach(bus => {
+      if(bus.busSale)
+      {
+        const sales = saleMapper(bus.busSale)
+        graphData.push(
+          {
+            busName: bus.busNumber,
+            sale : sales
+          }
+          );
+      }
+    }) 
+    const dashboardData = {
+        totalDailySale : overAllSalesData.daily,
+        totalYearlySale: overAllSalesData.monthly,
+        totalMonthlySale: overAllSalesData.yearly,
+        graphData
+    };
 
     return res.status(200).json({
       message: "Bus Owner dashboard",
@@ -57,6 +65,42 @@ export const getBusownerDashboardController = async (req: Request, res: Response
 }
 
 
+export const getUserDashboardController = async (req:Request, res:Response, next:NextFunction) => {
+  try{
+    const userId = res.locals.user.id;
+    const transactions = await Transaction.find({
+      userId: userId
+    });
+    const creditData = transactions.filter(transaction => transaction.transactionType === 'credit');
+    const debitData = transactions.filter(transaction => transaction.transactionType === 'debit');
+
+    let creditAmount = 0;
+    let debitAmount = 0;
+
+    creditData.forEach(c => {
+      creditAmount += c.amount;
+    })
+
+    debitData.forEach(d => {
+      debitAmount += d.amount
+    })
+
+
+    return res.status(200).json({
+      message: "User dashboard",
+      data: {
+        creditAmount,
+        debitAmount
+      }
+
+    })
+  }catch(error){
+    console.error(error);
+    next(error);
+  }
+}
+
 export default {
-  getBusownerDashboardController
+  getBusownerDashboardController,
+  getUserDashboardController
 }
