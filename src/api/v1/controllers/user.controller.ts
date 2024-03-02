@@ -181,10 +181,7 @@ const deductBusFareController = async (
                 requiredResponse.valid = true;
                 requiredResponse.newAmount = existingUser.amount;
             } else {
-                return res.status(400).json({
-                    message: "Invalid card or insufficient balance",
-                    valid:false
-                })
+                return res.status(400).send(false)
             }
             existingUser.location.lastLatitude = parsedLatitude;
             existingUser.location.lastLongitude = parsedLongitude;

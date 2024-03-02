@@ -11,7 +11,6 @@ export const getBusownerDashboardController = async (req: Request, res: Response
     if(!busOwner) return throwError(req, res, "Invalid Bus Owner", 404);
 
     const buses = await Bus.find({busOwner: busOwnerId}).lean();
-    console.log(buses);
     let totalSaleData : {date: Date, amount:number}[] = [];
 
     buses.forEach(bus => {
