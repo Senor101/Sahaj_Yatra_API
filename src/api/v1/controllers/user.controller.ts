@@ -157,12 +157,12 @@ const deductBusFareController = async (
 
         // bus and rfid card validation
         const bus = await Bus.findById(busId);
-        if(!bus) return throwError(req, res, "Bus not found", 404);
-        if (!rfid) return throwError(req, res, "RFID tag required in query", 400);
+        if(!bus) return res.status(400).send(false);
+        if (!rfid) return res.status(400).send(false);
         if (!latitude || !longitude)
-            return throwError(req, res, "Latitude and Longitude are required!", 400);
+            return res.status(400).send(false)
         const existingUser = await User.findOne({ rfidNumber: rfid });
-        if (!existingUser) return throwError(req, res, "Invalid RFID TAG", 404);
+        if (!existingUser) return res.status(400).send(false)
 
         const parsedLatitude: number = +latitude;
         const parsedLongitude: number = +longitude;
