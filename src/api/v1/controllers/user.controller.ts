@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, response } from "express";
 import User from "../models/user.model"
 import throwError from "../utils/throwError.util";
 import bcrypt from "bcrypt";
-import { BusOwner } from '../models/bus.model';
+import { Bus, BusOwner } from '../models/bus.model';
 import Transaction from "../models/transaction.model";
 import getDistanceFromLatLonInKm from "../helpers/distance";
 import { calculateFare } from "../helpers/fare";
@@ -144,13 +144,16 @@ const deductBusFareController = async (
     next: NextFunction
 ): Promise<Response | void> => {
     try {
-        const { rfid, latitude, longitude } = req.query;
+        const { rfid, latitude, longitude, busId} = req.query;
         // calculate distance base fare from current and last geo location
         //deduct amount
 
         // minimum amount to get ride service
         const minimumAmount = 50;
 
+        // bus and rfid card validation
+        const bus = await Bus.findById(busId);
+        if(!bus) return throwError(req, res, "Bus not found", 404);
         if (!rfid) return throwError(req, res, "RFID tag required in query", 400);
         if (!latitude || !longitude)
             return throwError(req, res, "Latitude and Longitude are required!", 400);
@@ -194,12 +197,13 @@ const deductBusFareController = async (
                 existingUser.location.currentLatitude,
                 existingUser.location.currentLongitude
             );
+            // deduct fare from user account
             const calculatedFare = calculateFare(totalDistance);
             existingUser.amount -= calculatedFare;
             requiredResponse.message = "Get out of the bus";
             requiredResponse.valid = true;
             requiredResponse.newAmount = existingUser.amount;
-            
+
             // save transaction details
             await Transaction.create({
                 amount: calculatedFare,
@@ -208,6 +212,14 @@ const deductBusFareController = async (
                 transactionDate: new Date(),
                 remarks: "Bus Fare"
             });
+
+
+            // link the amount to bus sales
+            bus.sale.push({
+                amount : calculatedFare,
+                date: new Date()
+            })
+            await bus.save();
         }
         await existingUser.save();
         return res.status(200).json(requiredResponse);

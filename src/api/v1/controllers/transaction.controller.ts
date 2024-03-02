@@ -3,6 +3,7 @@ import axios from "axios";
 import { ObjectId } from "mongoose";
 
 import Transaction from "../models/transaction.model";
+import User from "../models/user.model";
 
 
 const getTransactionHistory = async (req: Request, res: Response, next: NextFunction) => {
@@ -48,10 +49,16 @@ const verifyPaymentController = async (req: Request, res: Response, next: NextFu
             },
             config
         );
+        
+        const user = await User.findById(userId)
+        if(!user) return res.status(400).json({message: "Invalid User"})
+
+        user.amount += amount/100;
+        await user.save();
 
         // // TODO : manage user and save transaction logs in db
         const newTransaction = await Transaction.create({
-            amount: amount,
+            amount: amount/100,
             userId: userId,
             transactionType: "credit",
             transactionDate: new Date(),

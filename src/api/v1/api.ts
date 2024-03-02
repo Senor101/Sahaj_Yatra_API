@@ -6,6 +6,7 @@ import authRouter from "./routes/auth.router";
 import transactionRouter from "./routes/transaction.router";
 import userRouter from "./routes/user.router";
 import busRouter from "./routes/bus.router";
+import dashboardRouter from "./routes/dashboard.router";
 
 const router = Router();
 
@@ -21,5 +22,7 @@ router.use("/auth", authRouter);
 router.use("/transaction", transactionRouter);
 
 router.use("/bus", busRouter);
+
+router.use('/dashboard', dashboardRouter);
 
 export default router;

@@ -10,6 +10,11 @@ export interface IBus extends Document {
         longitude: number;
     };
     busOwner: IBusOwner;
+    sale:[{
+        amount: number,
+        date: Date
+    
+    }];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -25,13 +30,6 @@ export interface IBusOwner extends Document {
     updatedAt: Date;
 }
 
-export interface IdailyEarning extends Document {
-    busNumber: string;
-    date: Date;
-    earning: number;
-    createdAt: Date;
-    updatedAt: Date;
-}
 
 const busSchema: Schema = new Schema(
     {
@@ -70,29 +68,20 @@ const busSchema: Schema = new Schema(
             type: Schema.ObjectId,
             ref: "BusOwner",
             required: [true, "Bus Owner is required"]
-        }
+        },
+        sale: [{
+            amount: {
+                type:Number,
+            },
+            data: {
+                type: Date
+            }
+        }]
     },
     { timestamps: true }
 );
 
 const Bus = model<IBus>("Bus", busSchema);
-
-const dailyEarningSchema: Schema = new Schema(
-    {
-        bus: {},
-        date: {
-            type: Date,
-            required: [true, "Date is required"]
-        },
-        earning: {
-            type: Number,
-            default: 0
-        }
-    },
-    { timestamps: true }
-);
-
-const DailyEarning = model<IdailyEarning>("DailyEarning", dailyEarningSchema);
 
 const busOwnerSchema: Schema = new Schema(
     {
@@ -134,4 +123,4 @@ const busOwnerSchema: Schema = new Schema(
 );
 
 const BusOwner = model<IBusOwner>("BusOwner", busOwnerSchema);
-export { BusOwner, Bus, DailyEarning };
+export { BusOwner, Bus };

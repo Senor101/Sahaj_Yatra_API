@@ -37,7 +37,7 @@ const userLogin = async (
         }
         const token = jwt.sign(
             { id: user?._id, role: "user" },
-            process.env.JWT_SECRET || "",
+            process.env.JWT_SECRET as string,
             {
                 expiresIn: "1d"
             }
@@ -115,7 +115,7 @@ const busOwnerLogin = async (
                 role: "busOwner",
                 id: existingBusOwner?._id
             },
-            process.env.JWT_SECRET || "",
+            process.env.JWT_SECRET as string,
             { expiresIn: "1d" }
         );
         existingBusOwner.token=token;
@@ -194,7 +194,7 @@ const superAdminLogin = async (
                 id: process.env.SUPER_ADMIN_ID,
                 role: "superAdmin"
             },
-            process.env.JWT_SECRET || "",
+            process.env.JWT_SECRET as string,
             { expiresIn: "1d" }
         );
         res.status(200).json({
