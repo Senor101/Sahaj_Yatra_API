@@ -16,8 +16,6 @@ const getTransactionHistory = async (req: Request, res: Response, next: NextFunc
         const udpatedTransactionHistory = transactionHistory.map(t => {
             var date = new Date(t.transactionDate);
             var newDate = date.toISOString().split('T')[0]
-
-            // console.log(newDate);
             return {
                 ...t,
                 transactionDate: newDate,

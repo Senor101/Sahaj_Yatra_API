@@ -48,9 +48,9 @@ export const getBusownerDashboardController = async (req: Request, res: Response
       }
     }) 
     const dashboardData = {
-        totalDailySale : overAllSalesData.daily,
-        totalYearlySale: overAllSalesData.monthly,
-        totalMonthlySale: overAllSalesData.yearly,
+        totalDailySale : Math.round(overAllSalesData.daily),
+        totalYearlySale: Math.round(overAllSalesData.monthly),
+        totalMonthlySale: Math.round(overAllSalesData.yearly),
         graphData
     };
 

@@ -9,7 +9,7 @@ export interface IBus extends Document {
         latitude: number;
         longitude: number;
     };
-    busOwner: IBusOwner;
+    busOwner?: IBusOwner;
     sale:[{
         amount: number,
         date: Date
@@ -125,10 +125,9 @@ const busOwnerSchema: Schema = new Schema(
             type: String,
             default: null
         }
-        // sales: [DailyEarning],
     },
     { timestamps: true }
-);
+    );
 
 const BusOwner = model<IBusOwner>("BusOwner", busOwnerSchema);
 export { BusOwner, Bus };

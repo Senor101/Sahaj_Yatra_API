@@ -51,6 +51,7 @@ const getAllBusesController = async (req: Request, res: Response, next: NextFunc
 const registerBus = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     try {
         const busBody: IBus = req.body;
+        const busId = res.locals.user.id;
         const existingBus = await Bus.findOne({ busNumber: busBody.busNumber }).lean();
         if (existingBus) {
             return throwError(req, res, "Bus with provided bus number exists.", 409);
@@ -58,7 +59,10 @@ const registerBus = async (req: Request, res: Response, next: NextFunction): Pro
         const newBus = await Bus.create(busBody);
         return res.status(201).json({
             message: "New Bus registered",
-            data: newBus
+            data: {
+                ...newBus,
+                busOwner:busId
+            }
         });
     } catch (error) {
         next(error);

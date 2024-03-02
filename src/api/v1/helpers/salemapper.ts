@@ -3,7 +3,6 @@ const saleMapper = function (totalSaleData: { date: Date; amount: number }[]) {
     const day = todayDate.getDate();
     const month = todayDate.getMonth();
     const year = todayDate.getFullYear();
-    console.log(day, month, year);
 
     let totalDailySale = 0;
     let totalMonthlySale = 0;
