@@ -63,12 +63,12 @@ const busSchema: Schema = new Schema(
             latitude: {
                 type: Number,
                 required: [true, "Latitude is required"],
-                default: 0
+                default: 28.255076
             },
             longitude: {
                 type: Number,
                 required: [true, "Longitude is required"],
-                default: 0
+                default: 83.982791
             }
         },
         busOwner: {
