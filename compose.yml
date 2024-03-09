@@ -1,0 +1,16 @@
+version: '1.0'
+services:
+  web:
+    image: sahaj-yatra
+    env_file:
+      - .env
+    build: .
+    command: npm start
+    ports: 
+      - "8000:8000"
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
