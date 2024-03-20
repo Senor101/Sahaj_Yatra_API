@@ -1,0 +1,32 @@
+paths:
+  /api/user/register:
+    post:
+      tags:
+        - User 
+      summary: Register a new user
+      description: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password: 
+                  type: string
+                  format: password
+      responses:
+        201: 
+          description: User created
+        409:
+          description: User already exists
+        404:
+          description: User not found
+        500:
+          description: Internal server error
