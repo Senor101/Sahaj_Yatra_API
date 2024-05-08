@@ -1,43 +1,43 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose'
 
 export interface ITransaction {
-    amount: number;
-    userId: Schema.Types.ObjectId;
-    transactionType: string;
-    transactionDate: Date;
-    createdAt: Date;
-    updatedAt: Date;
+  amount: number
+  userId: Schema.Types.ObjectId
+  transactionType: string
+  transactionDate: Date
+  createdAt: Date
+  updatedAt: Date
 }
 
 const transactionSchema = new Schema(
-    {
-        amount: {
-            type: Number,
-            required: [true, "Amount is required"]
-        },
-        userId: {
-            type: Schema.Types.ObjectId,
-            reference: "User",
-            required: [true, "User Id is required"]
-        },
-        transactionDate: {
-            type: Date,
-            required: [true, "Transaction Date is required"]
-        },
-        transactionType: {
-            type: String,
-            required: [true, "Transaction Type is required"],
-            enum: ["credit", "debit"]
-        },
-        remarks: {
-            type: String,
-            required: false,
-            default: ""
-        }
+  {
+    amount: {
+      type: Number,
+      required: [true, 'Amount is required'],
     },
-    { timestamps: true }
-);
+    userId: {
+      type: Schema.Types.ObjectId,
+      reference: 'User',
+      required: [true, 'User Id is required'],
+    },
+    transactionDate: {
+      type: Date,
+      required: [true, 'Transaction Date is required'],
+    },
+    transactionType: {
+      type: String,
+      required: [true, 'Transaction Type is required'],
+      enum: ['credit', 'debit'],
+    },
+    remarks: {
+      type: String,
+      required: false,
+      default: '',
+    },
+  },
+  { timestamps: true },
+)
 
-const Transaction = model<ITransaction>("Transaction", transactionSchema);
+const Transaction = model<ITransaction>('Transaction', transactionSchema)
 
-export default Transaction;
+export default Transaction

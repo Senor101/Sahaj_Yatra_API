@@ -1,14 +1,14 @@
-import { Request, Response } from 'express';
+import { Request, Response } from 'express'
 
 const throwError = (
   req: Request,
   res: Response,
   message: string,
-  statusCode: number
+  statusCode: number,
 ) => {
   return res.status(statusCode).json({
     error: message,
-  });
-};
+  })
+}
 
-export default throwError;
+export default throwError

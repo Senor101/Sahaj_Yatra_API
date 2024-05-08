@@ -2,7 +2,7 @@ paths:
   /api/user/register:
     post:
       tags:
-        - User 
+        - User
       summary: Register a new user
       description: Register a new user
       requestBody:
@@ -18,11 +18,11 @@ paths:
                 email:
                   type: string
                   format: email
-                password: 
+                password:
                   type: string
                   format: password
       responses:
-        201: 
+        201:
           description: User created
         409:
           description: User already exists

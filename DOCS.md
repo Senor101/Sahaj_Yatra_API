@@ -2,8 +2,8 @@
 
 **Note:** The `{{API_URL}}` denotes the base url corresponding to either the local API url or the hosted url.
 
--   For local `{{API_URL}} : http://localhost:8000/api/v1`
--   For remote `{{API_URL}} : https://sahaj-yatra-api.onrender.com/api/v1`
+- For local `{{API_URL}} : http://localhost:8000/api/v1`
+- For remote `{{API_URL}} : https://sahaj-yatra-api.onrender.com/api/v1`
 
 # SAHAJ YATRA API
 
@@ -11,30 +11,30 @@
 
 ## Endpoints
 
--   [AUTH](#auth)
-    1. [ADMIN LOGIN](#1-admin-login)
-    1. [USER LOGIN](#2-user-login)
-    1. [USER REGISTER](#3-user-register)
-    1. [ADMIN REGISTER](#4-admin-register)
-    1. [SUPERADMIN LOGIN](#5-superadmin-login)
--   [TRANSACTION](#transaction)
-    1. [GET TRANSACTION HISTORY](#1-get-transaction-history)
-    1. [KHALTI TRANSACTION](#2-khalti-transaction)
--   [USERS](#users)
-    1. [GET UNVERIFIED USERS](#1-get-unverified-users)
-    1. [GET ALL USERS](#2-get-all-users)
-    1. [UPDATE USER INFO](#3-update-user-info)
-    1. [DELETE USER](#4-delete-user)
-    1. [DEDUCT FARE](#5-deduct-fare)
-    1. [VERIFY USER](#6-verify-user)
-    1. [GET VERIFIED USERS](#7-get-verified-users)
-    1. [GET INDIVIDUAL USER](#8-get-individual-user)
--   [BUS](#bus)
-    1. [GET BUS LOCATION](#1-get-bus-location)
-    1. [UPDATE BUS LOCATION](#2-update-bus-location)
-    1. [REGISTER BUS](#3-register-bus)
-    1. [GET ALL BUSES](#4-get-all-buses)
-    1. [GET INDIVIDUAL BUS](#5-get-individual-bus)
+- [AUTH](#auth)
+  1. [ADMIN LOGIN](#1-admin-login)
+  1. [USER LOGIN](#2-user-login)
+  1. [USER REGISTER](#3-user-register)
+  1. [ADMIN REGISTER](#4-admin-register)
+  1. [SUPERADMIN LOGIN](#5-superadmin-login)
+- [TRANSACTION](#transaction)
+  1. [GET TRANSACTION HISTORY](#1-get-transaction-history)
+  1. [KHALTI TRANSACTION](#2-khalti-transaction)
+- [USERS](#users)
+  1. [GET UNVERIFIED USERS](#1-get-unverified-users)
+  1. [GET ALL USERS](#2-get-all-users)
+  1. [UPDATE USER INFO](#3-update-user-info)
+  1. [DELETE USER](#4-delete-user)
+  1. [DEDUCT FARE](#5-deduct-fare)
+  1. [VERIFY USER](#6-verify-user)
+  1. [GET VERIFIED USERS](#7-get-verified-users)
+  1. [GET INDIVIDUAL USER](#8-get-individual-user)
+- [BUS](#bus)
+  1. [GET BUS LOCATION](#1-get-bus-location)
+  1. [UPDATE BUS LOCATION](#2-update-bus-location)
+  1. [REGISTER BUS](#3-register-bus)
+  1. [GET ALL BUSES](#4-get-all-buses)
+  1. [GET INDIVIDUAL BUS](#5-get-individual-bus)
 
 ---
 
@@ -229,47 +229,37 @@ URL: {{API_URL}}/auth/login/superadmin
 
 ### 6. GET USER INFO FROM TOKEN
 
-
-
-***Endpoint:***
+**_Endpoint:_**
 
 ```bash
 Method: GET
-Type: 
+Type:
 URL: {{API_URL}}/user/info
 ```
 
+**_Headers:_**
 
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| Authorization | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Yzc2ZTdmODg5Mjc3MjlkNDI0MzcxZSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzA4NzA2MjkxLCJleHAiOjE3MDg3OTI2OTF9.1_sY8OROmv6XcL9-HbDgTm1S0D2qvPHhi5iUXXqhq4I |  |
-
-
+| Key           | Value                                                                                                                                                                                                | Description |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| Authorization | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Yzc2ZTdmODg5Mjc3MjlkNDI0MzcxZSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzA4NzA2MjkxLCJleHAiOjE3MDg3OTI2OTF9.1_sY8OROmv6XcL9-HbDgTm1S0D2qvPHhi5iUXXqhq4I |             |
 
 ### 7. LOGOUT
 
-
-
-***Endpoint:***
+**_Endpoint:_**
 
 ```bash
 Method: POST
-Type: 
+Type:
 URL: {{API_URL}}/auth/logout/
 ```
 
+**_Headers:_**
 
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| Authorization | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Yzc2ZTdmODg5Mjc3MjlkNDI0MzcxZSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzA5MTI4MTI0LCJleHAiOjE3MDkyMTQ1MjR9.fQxGNIonNjkqnx5J4rKJdlmfAC4kAQ37AnQLjRvcA50 |  |
-
+| Key           | Value                                                                                                                                                                                                | Description |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| Authorization | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Yzc2ZTdmODg5Mjc3MjlkNDI0MzcxZSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzA5MTI4MTI0LCJleHAiOjE3MDkyMTQ1MjR9.fQxGNIonNjkqnx5J4rKJdlmfAC4kAQ37AnQLjRvcA50 |             |
 
 ## TRANSACTION
-
 
 ### 1. GET TRANSACTION HISTORY
 
@@ -277,17 +267,15 @@ URL: {{API_URL}}/auth/logout/
 
 ```bash
 Method: GET
-Type: 
+Type:
 URL: {{API_URI}}/transaction/history
 ```
 
+**_Headers:_**
 
-***Headers:***
-
-| Key | Value | Description |
-| --- | ------|-------------|
-| Authorization | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Yzc2ZTdmODg5Mjc3MjlkNDI0MzcxZSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzA5MTI4MTI0LCJleHAiOjE3MDkyMTQ1MjR9.fQxGNIonNjkqnx5J4rKJdlmfAC4kAQ37AnQLjRvcA50 |  |
-
+| Key           | Value                                                                                                                                                                                                | Description |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| Authorization | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Yzc2ZTdmODg5Mjc3MjlkNDI0MzcxZSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzA5MTI4MTI0LCJleHAiOjE3MDkyMTQ1MjR9.fQxGNIonNjkqnx5J4rKJdlmfAC4kAQ37AnQLjRvcA50 |             |
 
 **_Response:_**
 
@@ -310,15 +298,13 @@ URL: {{API_URI}}/transaction/history
 }
 ```
 
-
-
 ### 2. KHALTI TRANSACTION
 
-***Endpoint:***
+**_Endpoint:_**
 
 ```bash
 Method: GET
-Type: 
+Type:
 URL: {{API_URI}}/transaction/verify-payment
 ```
 
